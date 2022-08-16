@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
 
 export const theme = createTheme({
   palette: {
@@ -14,3 +14,5 @@ export const theme = createTheme({
   //     fontFamily: "Product Sans",
   //   },
 });
+
+export const rich_black = "#03312E";
