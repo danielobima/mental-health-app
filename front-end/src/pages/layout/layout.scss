@@ -1,0 +1,14 @@
+.link{
+    padding-left: 2vw;
+    padding-bottom: 1vh;
+    padding-top: 1vh;
+    width: 100%;
+    text-decoration: none;
+    color: white;
+    background-color: none;
+    transition: color 0.3s, background-color 0.3s;
+}
+.link:hover{
+    color: #03312E;
+    background-color: white;
+}
