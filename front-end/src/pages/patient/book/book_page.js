@@ -1,5 +1,6 @@
 import { CalendarTodayOutlined } from "@mui/icons-material";
 import {
+  Avatar,
   Button,
   CircularProgress,
   Collapse,
@@ -8,13 +9,16 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import Illus2 from "../../images/svg/illus2/illus2";
-import dotAnim from "../../utilities/dotAnim";
-import { rich_black, skobeloff } from "../../utilities/themes";
+import Illus2 from "../../../images/svg/illus2/illus2";
+import dotAnim from "../../../utilities/dotAnim";
+import { rich_black, rich_grey, skobeloff } from "../../../utilities/themes";
+import rachel from "../../../images/jpg/rachel.jpg";
+import Review from "../../../utilities/shared_components/review";
 
 const BookPage = () => {
   const [details, setDetails] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  //stages are request, searching, offer.
+  const [stage, setStage] = useState("offer");
   const [dots, setDots] = useState(".");
 
   return (
@@ -22,11 +26,13 @@ const BookPage = () => {
       <Stack width={"60%"} pl={3} pt={"10vh"} spacing={2}>
         <Stack direction={"row"} spacing={1} alignItems={"center"}>
           <CalendarTodayOutlined fontSize="large" sx={{ color: skobeloff }} />
-          <Typography variant="h3" color={skobeloff} fontWeight={600}>
+
+          <Typography variant="h4" color={skobeloff} fontWeight={600}>
             Book an appointment
           </Typography>
         </Stack>
-        <Collapse in={!submitted} sx={{ width: "100%" }}>
+
+        <Collapse in={stage === "request"} sx={{ width: "100%" }}>
           <Stack spacing={2}>
             <Typography component="span" color={rich_black}>
               Please describe your issue
@@ -47,7 +53,7 @@ const BookPage = () => {
                 sx={{ color: "white", width: "fit-content" }}
                 variant="contained"
                 onClick={() => {
-                  setSubmitted(true);
+                  setStage("searching");
                   dotAnim(setDots);
                 }}
               >
@@ -62,18 +68,43 @@ const BookPage = () => {
             </Stack>
           </Stack>
         </Collapse>
-        <Collapse in={submitted} sx={{ width: "100%" }}>
-          <Stack
-            alignItems={"center"}
-            pt="10vh"
-            width="100%"
-            height={"50%"}
-            spacing={2}
-          >
+        <Collapse in={stage === "searching"} sx={{ width: "100%" }}>
+          <Stack alignItems={"center"} pt="10vh" width="100%" spacing={2}>
             <CircularProgress size={"7vw"} />
             <Typography color={rich_black} variant="h6">
               Searching for a therapist{dots}
             </Typography>
+          </Stack>
+        </Collapse>
+        <Collapse in={stage === "offer"}>
+          <Stack alignItems={"center"} width="100%" spacing={2}>
+            <Avatar sx={{ width: "25vh", height: "25vh" }} src={rachel}>
+              H
+            </Avatar>
+            <Stack alignItems={"center"}>
+              <Typography variant="h6" color={rich_black}>
+                Dr Sarah
+              </Typography>
+              <Typography component="span" color={rich_grey}>
+                Nairobi hospital
+              </Typography>
+            </Stack>
+            <Stack
+              direction={"row"}
+              width="40%"
+              justifyContent={"space-between"}
+            >
+              <Button variant="contained" sx={{ color: "white" }}>
+                Accept
+              </Button>
+              <Button variant="outlined">Decline</Button>
+            </Stack>
+            <Stack alignItems={"start"} width="70%">
+              <Typography variant="h6" color={rich_black}>
+                Reviews
+              </Typography>
+              <Review />
+            </Stack>
           </Stack>
         </Collapse>
       </Stack>
