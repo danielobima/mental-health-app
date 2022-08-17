@@ -4,6 +4,7 @@ import HomePage from "../pages/patient/home/home_page";
 import Layout from "../pages/layout/layout";
 import LoginPage from "../pages/login/login_page";
 import DocHomePage from "../pages/doctor/home/doc_home_page";
+import Appointment from "../pages/doctor/appointment/appointment";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -13,6 +14,7 @@ const AppRoutes = () => {
       </Route>
       <Route path="/doc" element={<Layout />}>
         <Route index element={<DocHomePage />} />
+        <Route path="/appointment" element={<Appointment />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />
     </Routes>

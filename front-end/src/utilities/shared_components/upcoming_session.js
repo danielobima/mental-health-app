@@ -14,7 +14,6 @@ const UpcomingSession = ({
         boxShadow: "0px 1px 4px rgb(200,200,200)",
         p: 2,
         borderRadius: "2px",
-        width: "100%",
       }}
     >
       <Stack direction="row" spacing={2} alignItems="center">
