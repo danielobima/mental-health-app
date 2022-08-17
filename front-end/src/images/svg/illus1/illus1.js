@@ -1,4 +1,3 @@
-import React from "react";
 import "./illus1.css";
 
 const Illus1 = ({ visible = false }) => {

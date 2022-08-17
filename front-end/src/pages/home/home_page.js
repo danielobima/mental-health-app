@@ -1,6 +1,6 @@
 import { Button, Container, Stack, Typography } from "@mui/material";
 import { ReactComponent as Lines } from "../../images/svg/lines.svg";
-import Illus1 from "../../images/svg/illus1";
+import Illus1 from "../../images/svg/illus1/illus1";
 import { rich_black, skobeloff, white_green } from "../../utilities/themes";
 import {
   ReceiptLongRounded,
