@@ -4,7 +4,7 @@ import os
 from flask import Flask
 import firebase_admin
 from firebase_admin import credentials
-from .routes import hello
+from .routes import *
 
 
 def create_app(test_config=None):
