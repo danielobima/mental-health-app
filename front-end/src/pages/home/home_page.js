@@ -7,6 +7,7 @@ import {
   TipsAndUpdatesOutlined,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   const [anim, setAnim] = useState(false);
@@ -24,12 +25,17 @@ const HomePage = () => {
             <Typography variant="h3" color={skobeloff} fontWeight={600}>
               Welcome Daniel
             </Typography>
-            <Button
-              variant="contained"
-              sx={{ color: "white", width: "fit-content", p: 2 }}
+            <Link
+              to="/book"
+              style={{ textDecoration: "none", width: "fit-content" }}
             >
-              Book an appointment
-            </Button>
+              <Button
+                variant="contained"
+                sx={{ color: "white", width: "fit-content", p: 2 }}
+              >
+                Book an appointment
+              </Button>
+            </Link>
             <Typography component="span" color={rich_black}>
               Some consoling text
             </Typography>
