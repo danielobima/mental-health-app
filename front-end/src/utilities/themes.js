@@ -16,5 +16,7 @@ export const theme = createTheme({
 });
 
 export const rich_black = "#03312E";
+export const rich_grey = "#43716E";
 export const skobeloff = "#037171";
 export const white_green = "#e9FFe9";
+export const tiffany_blue = "#00b9ae";
