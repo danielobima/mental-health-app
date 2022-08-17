@@ -4,7 +4,9 @@ import "../layout.scss";
 const LayoutLink = ({ children, href }) => {
   return (
     <Link to={href} className="link">
-      <Stack direction={"row"}>{children}</Stack>
+      <Stack direction={"row"} alignItems="center" spacing={1} fontSize={18}>
+        {children}
+      </Stack>
     </Link>
   );
 };

@@ -3,16 +3,18 @@ import { createTheme } from "@mui/material/styles";
 export const theme = createTheme({
   palette: {
     primary: {
-      main: "#E4572E",
+      main: "#00B9AE",
     },
     secondary: {
       main: "#464FC0ff",
     },
     green: "#119b49",
   },
-  //   typography: {
-  //     fontFamily: "Product Sans",
-  //   },
+  typography: {
+    fontFamily: "Inter",
+  },
 });
 
 export const rich_black = "#03312E";
+export const skobeloff = "#037171";
+export const white_green = "#e9FFe9";
