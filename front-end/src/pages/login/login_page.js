@@ -11,7 +11,6 @@ import { useContext, useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { useNavigate } from "react-router-dom";
 import bgImage from "../../images/jpg/talking.jpg";
-import LogoBlack from "../../images/svg/logo_black/logo_black";
 import { AuthContext } from "../../providers/auth_provider";
 
 const LoginPage = () => {
@@ -30,6 +29,7 @@ const LoginPage = () => {
     if (context.userId) {
       navigate("/");
     }
+    // eslint-disable-next-line
   }, []);
 
   return (

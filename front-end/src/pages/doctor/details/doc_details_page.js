@@ -14,7 +14,7 @@ import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import Illus3 from "../../../images/svg/illus3/illus3";
 import { skobeloff } from "../../../utilities/themes";
 
-const DetailsPage = () => {
+const DocDetailsPage = () => {
   return (
     <Stack width={"100%"} height={"100%"} direction={"row"}>
       <Stack width={"60%"} pl={3} pt={"10vh"} spacing={3}>
@@ -47,6 +47,9 @@ const DetailsPage = () => {
             />
             <TextValidator
               style={{ width: "100%" }}
+              label="Location"
+              type="text"
+              name="location"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -54,9 +57,6 @@ const DetailsPage = () => {
                   </InputAdornment>
                 ),
               }}
-              label="Location"
-              type="text"
-              name="location"
             />
             <FormControl fullWidth>
               <InputLabel id="religion-label">Religion</InputLabel>
@@ -78,4 +78,4 @@ const DetailsPage = () => {
   );
 };
 
-export default DetailsPage;
+export default DocDetailsPage;
