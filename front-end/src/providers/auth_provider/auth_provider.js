@@ -16,6 +16,8 @@ const AuthProvider = ({ children }) => {
   /** A user identification string */
   const [user_id, setUserId] = useState("");
 
+  const [user, setUser] = useState();
+
   const [user_details, setUserDetails] = useState(false);
   const [user_type, setUserType] = useState(false);
 
@@ -48,6 +50,7 @@ const AuthProvider = ({ children }) => {
       const user = userCredential.user;
       setUserId(user.uid);
       setUserType(user_type);
+      setUser(user);
     } catch (error) {
       return error.message;
     }
@@ -60,6 +63,7 @@ const AuthProvider = ({ children }) => {
       setUserId(user.uid);
       setUserDetails(userDetailsAndType.user_details);
       setUserType(userDetailsAndType.user_type);
+      setUser(user);
       return user.uid;
     } catch (error) {
       return error.message;
@@ -89,6 +93,7 @@ const AuthProvider = ({ children }) => {
         user_details,
         user_type,
         createNewUser,
+        user,
       }}
     >
       {children}

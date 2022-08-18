@@ -14,12 +14,16 @@ import dotAnim from "../../../utilities/dotAnim";
 import { rich_black, rich_grey, skobeloff } from "../../../utilities/themes";
 import rachel from "../../../images/jpg/rachel.jpg";
 import Review from "../../../utilities/shared_components/review";
+import { useNavigate } from "react-router-dom";
 
 const BookPage = () => {
   const [details, setDetails] = useState("");
   //stages are request, searching, offer.
-  const [stage, setStage] = useState("offer");
+  const [stage, setStage] = useState("request");
   const [dots, setDots] = useState(".");
+  const navigator = useNavigate();
+
+  const simulation = true;
 
   return (
     <Stack width={"100%"} height={"100%"} direction={"row"}>
@@ -54,6 +58,11 @@ const BookPage = () => {
                 variant="contained"
                 onClick={() => {
                   setStage("searching");
+                  if (simulation) {
+                    setTimeout(() => {
+                      setStage("offer");
+                    }, 5000);
+                  }
                   dotAnim(setDots);
                 }}
               >
@@ -94,7 +103,15 @@ const BookPage = () => {
               width="40%"
               justifyContent={"space-between"}
             >
-              <Button variant="contained" sx={{ color: "white" }}>
+              <Button
+                variant="contained"
+                sx={{ color: "white" }}
+                onClick={() => {
+                  if (simulation) {
+                    navigator("/");
+                  }
+                }}
+              >
                 Accept
               </Button>
               <Button variant="outlined">Decline</Button>

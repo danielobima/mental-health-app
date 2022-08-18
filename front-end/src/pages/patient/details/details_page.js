@@ -1,4 +1,4 @@
-import { Place } from "@mui/icons-material";
+import { Person, Place } from "@mui/icons-material";
 import {
   Avatar,
   Button,
@@ -10,40 +10,99 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { useContext, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
+import { useNavigate } from "react-router-dom";
 import Illus3 from "../../../images/svg/illus3/illus3";
-import { skobeloff } from "../../../utilities/themes";
+import Patient from "../../../models/patient_model";
+import { AuthContext } from "../../../providers/auth_provider/auth_provider";
+import { submitPatientDetails } from "../../../providers/auth_provider/utilities/submit_user_details";
+import { rich_grey, skobeloff } from "../../../utilities/themes";
 
 const DetailsPage = () => {
+  const [profile_photo /*,setPhoto*/] = useState("no photo");
+  const [age, setAge] = useState("");
+  const [full_name, setFullName] = useState("");
+  const [telephone, setTelephone] = useState("");
+  const context = useContext(AuthContext);
+  const email = context.user ? context.user.email : "test1@mail.com";
+  const patient_id = context.user_id ? context.user_id : "";
+  const [location, setLocation] = useState("");
+  const [religion, setReligion] = useState("");
+  const navigator = useNavigate();
+
   return (
     <Stack width={"100%"} height={"100%"} direction={"row"}>
-      <Stack width={"60%"} pl={3} pt={"10vh"} spacing={3}>
+      <Stack width={"60%"} pl={3} pt={"5vh"} spacing={3}>
         <Typography variant="h4" color={skobeloff} fontWeight={600}>
           Complete your account
         </Typography>
+        <Stack width={"60%"} alignItems="center" spacing={2}>
+          <Avatar
+            sx={{
+              width: "10vw",
+              height: "10vw",
+            }}
+          >
+            <Person />
+          </Avatar>
+          <Typography component="span" color={rich_grey} fontWeight={600}>
+            Click the image to change it
+          </Typography>
+        </Stack>
 
-        <Avatar
-          sx={{
-            width: "10vw",
-            height: "10vw",
+        <ValidatorForm
+          className="form"
+          onSubmit={async () => {
+            let patient = new Patient({
+              full_name,
+              age,
+              telephone,
+              email,
+              location,
+              religion,
+              patient_id,
+              profile_photo,
+            });
+            try {
+              await submitPatientDetails(patient);
+              navigator("/");
+            } catch (error) {
+              alert(error);
+            }
           }}
         >
-          D
-        </Avatar>
-        <Typography component={"span"}>Daniel</Typography>
-        <ValidatorForm className="form">
-          <Stack width={"60%"} alignItems="stretch" spacing={2}>
+          <Stack width={"60%"} alignItems="stretch" spacing={2} pb="5vh">
+            <TextValidator
+              style={{ width: "100%" }}
+              label="Full name"
+              type="text"
+              name="full_name"
+              value={full_name}
+              onChange={(event) => setFullName(event.target.value)}
+              validators={["required"]}
+              errorMessages={["This field is required"]}
+            />
             <TextValidator
               style={{ width: "100%" }}
               label="Age"
               type="number"
               name="age"
+              value={age}
+              onChange={(event) => setAge(event.target.value)}
+              validators={["required"]}
+              errorMessages={["This field is required"]}
             />
             <TextValidator
               style={{ width: "100%" }}
               label="Telephone"
               type="tel"
               name="telephone"
+              value={telephone}
+              onChange={(event) => setTelephone(event.target.value)}
+              hintText="Hi"
+              validators={["required"]}
+              errorMessages={["This field is required"]}
             />
             <TextValidator
               style={{ width: "100%" }}
@@ -54,14 +113,28 @@ const DetailsPage = () => {
                   </InputAdornment>
                 ),
               }}
-              label="Location"
+              label="Address"
               type="text"
-              name="location"
+              name="address"
+              value={location}
+              onChange={(event) => setLocation(event.target.value)}
+              validators={["required"]}
+              errorMessages={["This field is required"]}
             />
             <FormControl fullWidth>
               <InputLabel id="religion-label">Religion</InputLabel>
-              <Select labelId="religion-label" label="Religion">
-                <MenuItem>Christian</MenuItem>
+              <Select
+                labelId="religion-label"
+                label="Religion"
+                value={religion}
+                onChange={(event) => setReligion(event.target.value)}
+              >
+                <MenuItem value={"Christian"}>Christian</MenuItem>
+                <MenuItem value={"Muslim"}>Muslim</MenuItem>
+                <MenuItem value={"Hindu"}>Hindu</MenuItem>
+                <MenuItem value={"Atheist"}>Atheist</MenuItem>
+                <MenuItem value={"Pagan"}>Pagan</MenuItem>
+                <MenuItem value={"Other"}>Other</MenuItem>
               </Select>
             </FormControl>
 

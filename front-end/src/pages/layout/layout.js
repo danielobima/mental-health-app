@@ -14,19 +14,30 @@ const Layout = () => {
   const [error, setError] = useState("");
   const handleSnackbarClose = () => setSnackbarOpen(false);
   useEffect(() => {
-    if (!context.user_id || !context.user_type) {
-      //userId or user type is null hence the user is not authenticated,
-      navigator("/login");
-    } else {
-      if (!context.user_details) {
-        navigator(context.userType === 0 ? "/details" : "/doc/details");
-      }
-    }
+    // if (!context.user_id || !context.user_type) {
+    //   //userId or user type is null hence the user is not authenticated,
+    //   navigator("/login");
+    // } else {
+    //   if (!context.user_details) {
+    //     navigator(context.userType === 0 ? "/details" : "/doc/details");
+    //   }
+    // }
     // eslint-disable-next-line
   }, []);
   return (
-    <Stack sx={{ width: "100%", height: "100vh" }} direction="row">
-      <Box sx={{ width: "12%", height: "100%", bgcolor: rich_black }}>
+    <Stack
+      sx={{ width: "100%", height: "100vh", position: "relative" }}
+      direction="row"
+    >
+      <Box sx={{ width: "12%", height: "100%" }}></Box>
+      <Box
+        sx={{
+          width: "12%",
+          height: "100%",
+          bgcolor: rich_black,
+          position: "fixed",
+        }}
+      >
         <Stack>
           <Logo />
           <Stack width="100%">
