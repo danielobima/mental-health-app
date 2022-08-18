@@ -1,11 +1,12 @@
-class Counselling:
-    def __init__(self,date, meeting_type, duration, location, therapist_name, patient_name, payment_method):
+class Session:
+    def __init__(self, session_id, date, meeting_type, duration, location, doctor_id, patient_id, payment_method):
+        self.session_id = session_id
         self.date = date
         self.meeting_type = meeting_type
         self.duration = duration
         self.location = location
-        self.therapist_name = therapist_name
-        self.patient_name = patient_name
+        self.doctor_id = doctor_id
+        self.patient_id = patient_id
         self.payment_method = payment_method
 
 
