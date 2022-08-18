@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./routes/app_routes";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
-import AuthProvider from "./providers/auth_provider";
+import AuthProvider from "./providers/auth_provider/auth_provider";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./utilities/themes";
 
@@ -29,3 +29,4 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+export const baseURL = "";

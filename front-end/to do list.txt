@@ -1,0 +1,4 @@
+routing based on user details
+push details
+define sessions model
+api calls for finding sessions

@@ -3,6 +3,11 @@ import {
   Box,
   Button,
   CircularProgress,
+  Collapse,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Snackbar,
   Typography,
 } from "@mui/material";
@@ -11,26 +16,46 @@ import { useContext, useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { useNavigate } from "react-router-dom";
 import bgImage from "../../images/jpg/talking.jpg";
-import { AuthContext } from "../../providers/auth_provider";
+import { AuthContext } from "../../providers/auth_provider/auth_provider";
+import { rich_black, skobeloff } from "../../utilities/themes";
 
 const LoginPage = () => {
   const context = useContext(AuthContext);
   let navigate = useNavigate();
 
+  const [createNew, setCreateNew] = useState(false);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [user_type, setUserType] = useState(0);
 
   const handleSnackbarClose = () => setSnackbarOpen(false);
 
   useEffect(() => {
-    if (context.userId) {
-      navigate("/");
+    if (context.user_id && context.user_type) {
+      if (context.user_details) {
+        navigate("/");
+      } else {
+        if (context.user_type === 0) {
+          navigate("/details");
+        } else {
+          navigate("/doc/details");
+        }
+      }
     }
     // eslint-disable-next-line
   }, []);
+
+  ValidatorForm.addValidationRule("isPasswordMatch", (value) => {
+    if (value !== password) {
+      return false;
+    }
+    return true;
+  });
 
   return (
     <Box position={"relative"} width="100%" height={"100vh"}>
@@ -64,20 +89,36 @@ const LoginPage = () => {
               <ValidatorForm
                 onSubmit={async () => {
                   setLoading(true);
-                  try {
-                    await context.signIn(email, password);
-                    setLoading(false);
-                    navigate("/");
-                  } catch (error) {
-                    setLoading(false);
-                    setError(error);
-                    setSnackbarOpen(true);
+                  if (!createNew) {
+                    try {
+                      await context.signIn(email, password);
+                      setLoading(false);
+                      navigate("/");
+                    } catch (error) {
+                      setLoading(false);
+                      setError(error);
+                      setSnackbarOpen(true);
+                    }
+                  } else {
+                    try {
+                      await context.createNewUser(email, password, user_type);
+                      setLoading(false);
+                      navigate("/");
+                    } catch (error) {
+                      setLoading(false);
+                      setError(error);
+                      setSnackbarOpen(true);
+                    }
                   }
                 }}
               >
                 <Stack justifyContent={"start"} spacing={2}>
-                  <Typography variant="h3">Mental health app</Typography>
-                  <Typography component={"span"}>Log in</Typography>
+                  <Typography variant="h3" color={rich_black}>
+                    Mental health app
+                  </Typography>
+                  <Typography component={"span"} color={skobeloff}>
+                    {!createNew ? <>Log in</> : <>Create a new account</>}
+                  </Typography>
                   <TextValidator
                     fullWidth={true}
                     label="Email"
@@ -97,10 +138,45 @@ const LoginPage = () => {
                     name="password"
                     type="password"
                     value={password}
-                    onChange={(event) => setPassword(event.target.value)}
+                    onChange={(event) => {
+                      setPassword(event.target.value);
+                      if (!createNew) {
+                        setConfirmPass(event.target.value);
+                      }
+                    }}
                     validators={["required"]}
                     errorMessages={["Please enter your password"]}
                   />
+                  <Collapse in={createNew}>
+                    <Stack spacing={2}>
+                      <TextValidator
+                        fullWidth={true}
+                        label="Confirm password"
+                        name="confirm_pass"
+                        type="password"
+                        value={confirmPass}
+                        onChange={(event) => setConfirmPass(event.target.value)}
+                        validators={["isPasswordMatch", "required"]}
+                        errorMessages={[
+                          "password mismatch",
+                          "Please enter your password",
+                        ]}
+                      />
+                      <FormControl fullWidth>
+                        <InputLabel id="userTypeLabel">Type of user</InputLabel>
+                        <Select
+                          labelId="userTypeLabel"
+                          id="userTypeLabel"
+                          label="Type of user"
+                          value={user_type}
+                          onChange={(event) => setUserType(event.target.value)}
+                        >
+                          <MenuItem value={0}>Patient</MenuItem>
+                          <MenuItem value={1}>Doctor</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Stack>
+                  </Collapse>
                   <Button
                     variant="contained"
                     type="submit"
@@ -113,6 +189,16 @@ const LoginPage = () => {
                       </>
                     )}
                     Log in
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    onClick={() => setCreateNew(!createNew)}
+                  >
+                    {!createNew ? (
+                      <>Create a new account</>
+                    ) : (
+                      <>Sign in to existing account</>
+                    )}
                   </Button>
                 </Stack>
               </ValidatorForm>
