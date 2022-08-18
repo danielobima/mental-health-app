@@ -11,6 +11,7 @@ import { useContext, useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { useNavigate } from "react-router-dom";
 import bgImage from "../../images/jpg/talking.jpg";
+import LogoBlack from "../../images/svg/logo_black/logo_black";
 import { AuthContext } from "../../providers/auth_provider";
 
 const LoginPage = () => {
@@ -25,7 +26,11 @@ const LoginPage = () => {
 
   const handleSnackbarClose = () => setSnackbarOpen(false);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (context.userId) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <Box position={"relative"} width="100%" height={"100vh"}>
@@ -55,20 +60,19 @@ const LoginPage = () => {
               width="100%"
               height={"100%"}
             >
+              {/* <LogoBlack /> */}
               <ValidatorForm
-                onSubmit={() => {
+                onSubmit={async () => {
                   setLoading(true);
-                  context
-                    .signIn(email, password)
-                    .then(() => {
-                      setLoading(false);
-                      navigate("/");
-                    })
-                    .catch((error) => {
-                      setLoading(false);
-                      setError(error);
-                      setSnackbarOpen(true);
-                    });
+                  try {
+                    await context.signIn(email, password);
+                    setLoading(false);
+                    navigate("/");
+                  } catch (error) {
+                    setLoading(false);
+                    setError(error);
+                    setSnackbarOpen(true);
+                  }
                 }}
               >
                 <Stack justifyContent={"start"} spacing={2}>

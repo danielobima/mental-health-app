@@ -1,6 +1,6 @@
 import { Paper, Stack, Typography } from "@mui/material";
 import { rich_black, skobeloff, white_green } from "../../../utilities/themes";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Calendar } from "react-calendar";
 import "./doc_home_page.scss";
 import { NewReleases, ReceiptLongRounded } from "@mui/icons-material";
@@ -13,13 +13,9 @@ const DocHomePage = () => {
   function onChange(nextValue) {
     setSelectedDate(nextValue);
   }
-  const [anim, setAnim] = useState(false);
-  const [session /*,setSession*/] = useState(true);
-  const [starting /*,setSession*/] = useState(false);
-
-  useEffect(() => {
-    setAnim(true);
-  }, []);
+  // const [anim, setAnim] = useState(false);
+  // const [session /*,setSession*/] = useState(true);
+  // const [starting /*,setSession*/] = useState(false);
 
   return (
     <Stack width={"100%"} height={"100%"} direction={"row"}>
@@ -39,7 +35,7 @@ const DocHomePage = () => {
           <Calendar
             tileClassName={"tile"}
             value={selectedDate}
-            onChange={setSelectedDate}
+            onChange={onChange}
           />
         </Paper>
         <Stack direction="row" alignItems={"center"} spacing={1} mb="3vh">

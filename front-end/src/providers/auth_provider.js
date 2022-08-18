@@ -1,38 +1,31 @@
 import { createContext, useEffect, useState } from "react";
 import { app } from "./init_firebase";
-import {
-  getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const auth = getAuth(app);
   const [userId, setUserId] = useState("");
-
-  const signIn = (email, password) => {
-    return new Promise((resolve, reject) => {
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          setUserId(user.uid);
-
-          //Get user type after this
-          resolve(user.uid);
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          reject(errorMessage);
-        });
-    });
+  const signIn = async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      setUserId(user.uid);
+      return user.uid;
+    } catch (error) {
+      return error.message;
+    }
   };
 
   const logOut = () => {
     return new Promise((resolve, reject) => {
       signOut(auth)
         .then(() => {
+          setUserId("");
           resolve();
         })
         .catch((error) => {
@@ -42,13 +35,7 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserId(user.uid);
-      } else {
-        setUserId("");
-      }
-    });
+    //check cookies for token.
     // eslint-disable-next-line
   }, []);
   return (
