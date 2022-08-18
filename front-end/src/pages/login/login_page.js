@@ -1,15 +1,31 @@
-import { Box, Button, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Snackbar,
+  Typography,
+} from "@mui/material";
 import { Stack } from "@mui/system";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { useNavigate } from "react-router-dom";
 import bgImage from "../../images/jpg/talking.jpg";
+import { AuthContext } from "../../providers/auth_provider";
 
 const LoginPage = () => {
+  const context = useContext(AuthContext);
   let navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const handleSnackbarClose = () => setSnackbarOpen(false);
+
+  useEffect(() => {}, []);
 
   return (
     <Box position={"relative"} width="100%" height={"100vh"}>
@@ -41,7 +57,18 @@ const LoginPage = () => {
             >
               <ValidatorForm
                 onSubmit={() => {
-                  navigate("/");
+                  setLoading(true);
+                  context
+                    .signIn(email, password)
+                    .then(() => {
+                      setLoading(false);
+                      navigate("/");
+                    })
+                    .catch((error) => {
+                      setLoading(false);
+                      setError(error);
+                      setSnackbarOpen(true);
+                    });
                 }}
               >
                 <Stack justifyContent={"start"} spacing={2}>
@@ -70,7 +97,17 @@ const LoginPage = () => {
                     validators={["required"]}
                     errorMessages={["Please enter your password"]}
                   />
-                  <Button variant="contained" type="submit">
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    sx={{ color: "white" }}
+                    disabled={loading}
+                  >
+                    {loading && (
+                      <>
+                        <CircularProgress size={"16px"} /> &nbsp;
+                      </>
+                    )}
                     Log in
                   </Button>
                 </Stack>
@@ -79,6 +116,20 @@ const LoginPage = () => {
           </Box>
         </Stack>
       </Box>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          {error}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
