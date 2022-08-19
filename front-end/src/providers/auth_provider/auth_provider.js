@@ -22,53 +22,65 @@ const AuthProvider = ({ children }) => {
   const [user_type, setUserType] = useState(false);
 
   /** A function for signing in */
-  const signIn = async (email, password) => {
-    return new Promise((resolve, reject) => {
+  const signIn = (email, password) =>
+    new Promise((resolve, reject) => {
       signInWithEmailAndPassword(auth, email, password)
-        .then(() => resolve())
+        .then((user) => {
+          validateUser(user.user)
+            .then((userDetailsAndType) => {
+              resolve(userDetailsAndType);
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        })
         .catch((error) => reject(error.message));
     });
-  };
-  /**A function for creating a new user */
-  const createNewUser = async (email, password, user_type) => {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
-      setUserId(user.uid);
-      setUserType(user_type);
-      setUser(user);
-    } catch (error) {
-      return error.message;
-    }
-  };
 
-  /**Checking if the user that has signed in is a doctor or a patient, and if the user has filled in their details. */
-  const validateUser = async (user) => {
-    try {
-      const userDetailsAndType = await checkUser();
-      setUserId(user.uid);
-      setUserDetails(userDetailsAndType.user_details);
-      setUserType(userDetailsAndType.user_type);
-      setUser(user);
-      return user.uid;
-    } catch (error) {
-      return error.message;
-    }
-  };
+  /**A function for creating a new user */
+  const createNewUser = (email, password, user_type) =>
+    new Promise((resolve, reject) => {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((user) => {
+          setUserId(user.uid);
+          setUserType(user_type);
+          setUser(user);
+          resolve(user);
+        })
+        .catch((error) => {
+          reject(error.message);
+        });
+    });
+
+  /**Checking if the user that has signed in is a doctor or a patient,
+   * and if the user has filled in their details. */
+  const validateUser = (user) =>
+    new Promise((resolve, reject) => {
+      checkUser(user.uid)
+        .then((userDetailsAndType) => {
+          setUserId(user.uid);
+          setUserDetails(userDetailsAndType.user_details);
+          setUserType(userDetailsAndType.user_type);
+          setUser(user);
+          resolve(userDetailsAndType);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
 
   /** A function for logging out */
-  const logOut = async () => {
-    try {
-      await signOut(auth);
-      setUserId("");
-    } catch (error) {
-      return error;
-    }
-  };
+  const logOut = () =>
+    new Promise((resolve, reject) => {
+      signOut(auth)
+        .then(() => {
+          resolve();
+          setUserId("");
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
 
   useEffect(() => {
     //check cookies for token.

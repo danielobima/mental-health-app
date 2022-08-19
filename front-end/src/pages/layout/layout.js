@@ -21,7 +21,6 @@ import NewLogoWhite from "../../images/svg/new_logo_white/new_logo_white";
 import { AuthContext } from "../../providers/auth_provider/auth_provider";
 import { rich_black, white_green } from "../../utilities/themes";
 import LayoutLink from "./components/layout_link";
-import josh_pic from "../../images/jpg/josh.jpg";
 
 const Layout = () => {
   const context = useContext(AuthContext);
@@ -74,14 +73,16 @@ const Layout = () => {
             <LayoutLink
               href={"/"}
               isLink={false}
-              onClick={async () => {
-                try {
-                  await context.logOut();
-                  navigator("/login");
-                } catch (error) {
-                  setError(error);
-                  setSnackbarOpen(true);
-                }
+              onClick={() => {
+                context
+                  .logOut()
+                  .then(() => {
+                    navigator("/login");
+                  })
+                  .catch((error) => {
+                    setError(error);
+                    setSnackbarOpen(true);
+                  });
               }}
             >
               <LogoutRounded />

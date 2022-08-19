@@ -4,29 +4,35 @@ import { baseURL } from "../../..";
 /**A function to update a doctor's details on the database
  * @param {Patient} patient
  */
-const submitPatientDetails = async (patient) => {
-  try {
-    let response = await axios.post(`${baseURL}/patient/add_details`, {
-      ...patient,
-    });
-    return response;
-  } catch (error) {
-    return error;
-  }
-};
+const submitPatientDetails = (patient) =>
+  new Promise((resolve, reject) => {
+    axios
+      .post(`${baseURL}/patient/add_details`, {
+        ...patient,
+      })
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
 
 /**A function to update a doctor's details on the database
  * @param {Doctor} doc
  */
-const submitDocDetails = async (doc) => {
-  try {
-    let response = await axios.post(`${baseURL}/doctor/add_details`, {
-      ...doc,
-    });
-    return response;
-  } catch (error) {
-    return error;
-  }
-};
+const submitDocDetails = (doc) =>
+  new Promise((resolve, reject) => {
+    axios
+      .post(`${baseURL}/doctor/add_details`, {
+        ...doc,
+      })
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
 
 export { submitDocDetails, submitPatientDetails };

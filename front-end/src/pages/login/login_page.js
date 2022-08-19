@@ -58,6 +58,36 @@ const LoginPage = () => {
     return true;
   });
 
+  /**Check whether the user is creating a new account then proceed to sign in or log in */
+  const handleSubmit = () => {
+    setLoading(true);
+    if (!createNew) {
+      context
+        .signIn(email, password)
+        .then(() => {
+          setLoading(false);
+          navigate("/");
+        })
+        .catch((error) => {
+          setLoading(false);
+          setError(error);
+          setSnackbarOpen(true);
+        });
+    } else {
+      context
+        .createNewUser(email, password, user_type)
+        .then(() => {
+          setLoading(false);
+          navigate("/");
+        })
+        .catch((error) => {
+          setLoading(false);
+          setError(error);
+          setSnackbarOpen(true);
+        });
+    }
+  };
+
   return (
     <Box position={"relative"} width="100%" height={"100vh"}>
       <Box
@@ -87,34 +117,7 @@ const LoginPage = () => {
               height={"100%"}
             >
               {/* <LogoBlack /> */}
-              <ValidatorForm
-                onSubmit={async () => {
-                  setLoading(true);
-                  if (!createNew) {
-                    context
-                      .signIn(email, password)
-                      .then(() => {
-                        setLoading(false);
-                        navigate("/");
-                      })
-                      .catch((error) => {
-                        setLoading(false);
-                        setError(error);
-                        setSnackbarOpen(true);
-                      });
-                  } else {
-                    try {
-                      await context.createNewUser(email, password, user_type);
-                      setLoading(false);
-                      navigate("/");
-                    } catch (error) {
-                      setLoading(false);
-                      setError(error);
-                      setSnackbarOpen(true);
-                    }
-                  }
-                }}
-              >
+              <ValidatorForm onSubmit={handleSubmit}>
                 <Stack justifyContent={"start"} spacing={2}>
                   <Stack direction="row" justifyContent={"center"}>
                     <NewLogo width={"50%"} />

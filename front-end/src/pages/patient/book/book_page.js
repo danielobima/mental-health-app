@@ -105,7 +105,7 @@ const BookPage = () => {
                 labelId="mode-label"
                 label="Mode of meeting"
                 value={mode}
-                onChange={(event) => setCauses(event.target.value)}
+                onChange={(event) => setMode(event.target.value)}
               >
                 <MenuItem value="Physical">Physical</MenuItem>
                 <MenuItem value="Virtual">Virtual</MenuItem>
