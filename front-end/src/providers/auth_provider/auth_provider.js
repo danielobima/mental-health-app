@@ -23,21 +23,11 @@ const AuthProvider = ({ children }) => {
 
   /** A function for signing in */
   const signIn = async (email, password) => {
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
-      try {
-        await validateUser(user);
-      } catch (error) {
-        return error;
-      }
-    } catch (error) {
-      return error.message;
-    }
+    return new Promise((resolve, reject) => {
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => resolve())
+        .catch((error) => reject(error.message));
+    });
   };
   /**A function for creating a new user */
   const createNewUser = async (email, password, user_type) => {

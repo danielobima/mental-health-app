@@ -4,6 +4,10 @@ import {
   Button,
   CircularProgress,
   Collapse,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
   TextareaAutosize,
   Typography,
@@ -15,13 +19,20 @@ import { rich_black, rich_grey, skobeloff } from "../../../utilities/themes";
 import rachel from "../../../images/jpg/rachel.jpg";
 import Review from "../../../utilities/shared_components/review";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux/es/exports";
+import { setSessionsWithDoctors } from "../../../redux/slices/patient_sessions_slice";
+import { allocated_session } from "../../../models/sessions_model";
 
 const BookPage = () => {
   const [details, setDetails] = useState("");
   //stages are request, searching, offer.
   const [stage, setStage] = useState("request");
   const [dots, setDots] = useState(".");
+  const [date, setDate] = useState("mm/dd/yyyy");
+  const [causes, setCauses] = useState("");
+  const [mode, setMode] = useState("Physical");
   const navigator = useNavigate();
+  const dispatch = useDispatch();
 
   const simulation = true;
 
@@ -52,6 +63,54 @@ const BookPage = () => {
                 resize: "none",
               }}
             ></TextareaAutosize>
+            <Typography component="span" color={rich_black}>
+              Please set your preferred date:
+            </Typography>
+            <input
+              type={"date"}
+              value={date}
+              onChange={(event) => setDate(event.target.value)}
+              style={{ padding: "1vh 0vh", width: "fit-content" }}
+            />
+            <Typography component="span" color={rich_black}>
+              What is causing your problem?
+            </Typography>
+            <FormControl>
+              <InputLabel id="causes-label"> Possible causes</InputLabel>
+              <Select
+                labelId="causes-label"
+                label="Possible causes"
+                value={causes}
+                onChange={(event) => setCauses(event.target.value)}
+              >
+                <MenuItem value="Childhood trauma">Childhood trauma</MenuItem>
+                <MenuItem value="Social isolation/anxiety">
+                  Social isolation/anxiety
+                </MenuItem>
+                <MenuItem value="Social disadvantage">
+                  Social disadvantage
+                </MenuItem>
+                <MenuItem value="Bereavement">Bereavement</MenuItem>
+                <MenuItem value="Stress">Stress</MenuItem>
+                <MenuItem value="Domestic violence">Domestic violence</MenuItem>
+                <MenuItem value="Other">Other</MenuItem>
+              </Select>
+            </FormControl>
+            <Typography component="span" color={rich_black}>
+              What is your preferred mode of meeting
+            </Typography>
+            <FormControl>
+              <InputLabel id="mode-label"> Mode of meeting</InputLabel>
+              <Select
+                labelId="mode-label"
+                label="Mode of meeting"
+                value={mode}
+                onChange={(event) => setCauses(event.target.value)}
+              >
+                <MenuItem value="Physical">Physical</MenuItem>
+                <MenuItem value="Virtual">Virtual</MenuItem>
+              </Select>
+            </FormControl>
             <Stack direction="row" justifyContent={"space-between"}>
               <Button
                 sx={{ color: "white", width: "fit-content" }}
@@ -92,11 +151,20 @@ const BookPage = () => {
             </Avatar>
             <Stack alignItems={"center"}>
               <Typography variant="h6" color={rich_black}>
-                Dr Sarah
+                Dr Rachel
               </Typography>
-              <Typography component="span" color={rich_grey}>
-                Nairobi hospital
-              </Typography>
+              <Stack
+                direction={"row"}
+                spacing={4}
+                justifyContent={"space-between"}
+              >
+                <Typography component="span" color={rich_grey}>
+                  Nairobi hospital
+                </Typography>
+                <Typography component="span" color={rich_grey}>
+                  {new Date(date).toDateString()}
+                </Typography>
+              </Stack>
             </Stack>
             <Stack
               direction={"row"}
@@ -108,6 +176,14 @@ const BookPage = () => {
                 sx={{ color: "white" }}
                 onClick={() => {
                   if (simulation) {
+                    dispatch(
+                      setSessionsWithDoctors([
+                        {
+                          ...allocated_session,
+                          date: new Date(date),
+                        },
+                      ])
+                    );
                     navigator("/");
                   }
                 }}

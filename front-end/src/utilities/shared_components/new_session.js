@@ -8,6 +8,8 @@ const NewSession = ({
   profile_url = michelle,
   date = new Date(Date.now()),
   physical = true,
+  onAccept = () => {},
+  onDecline = () => {},
 }) => {
   return (
     <Paper
@@ -43,10 +45,10 @@ const NewSession = ({
           </Stack>
         </Stack>
         <Stack direction="row" spacing={2}>
-          <IconButton color="primary">
+          <IconButton color="primary" onClick={onAccept}>
             <Done />
           </IconButton>
-          <IconButton color="error">
+          <IconButton color="error" onClick={onAccept}>
             <Close />
           </IconButton>
         </Stack>

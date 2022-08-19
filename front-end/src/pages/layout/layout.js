@@ -1,11 +1,27 @@
-import { HomeRounded, LogoutRounded, PersonRounded } from "@mui/icons-material";
-import { Alert, Box, Snackbar, Stack, Typography } from "@mui/material";
+import {
+  HomeRounded,
+  LogoutRounded,
+  Notifications,
+  Person,
+  PersonRounded,
+  Settings,
+} from "@mui/icons-material";
+import {
+  Alert,
+  Avatar,
+  Box,
+  IconButton,
+  Snackbar,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import Logo from "../../images/svg/logo/logo";
+import NewLogoWhite from "../../images/svg/new_logo_white/new_logo_white";
 import { AuthContext } from "../../providers/auth_provider/auth_provider";
-import { rich_black } from "../../utilities/themes";
+import { rich_black, white_green } from "../../utilities/themes";
 import LayoutLink from "./components/layout_link";
+import josh_pic from "../../images/jpg/josh.jpg";
 
 const Layout = () => {
   const context = useContext(AuthContext);
@@ -39,7 +55,9 @@ const Layout = () => {
         }}
       >
         <Stack>
-          <Logo />
+          <Stack direction={"row"} justifyContent="center" mt="5vh" mb="5vh">
+            <NewLogoWhite width={"50%"} />
+          </Stack>
           <Stack width="100%">
             <LayoutLink href={"/"}>
               <HomeRounded />
@@ -88,6 +106,21 @@ const Layout = () => {
           {error}
         </Alert>
       </Snackbar>
+      <Box sx={{ position: "absolute", width: "fit-content", p: 2, right: 0 }}>
+        <Stack direction="row-reverse" spacing={2}>
+          <Avatar
+            sx={{ width: "3vw", height: "3vw", boxShadow: "0px 3px 6px grey" }}
+          >
+            <Person htmlColor={white_green} />
+          </Avatar>
+          <IconButton sx={{ aspectRatio: "1/1" }} color="primary">
+            <Notifications />
+          </IconButton>
+          <IconButton sx={{ aspectRatio: "1/1" }} color="primary">
+            <Settings />
+          </IconButton>
+        </Stack>
+      </Box>
     </Stack>
   );
 };

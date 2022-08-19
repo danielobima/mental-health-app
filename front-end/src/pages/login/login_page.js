@@ -16,6 +16,7 @@ import { useContext, useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { useNavigate } from "react-router-dom";
 import bgImage from "../../images/jpg/talking.jpg";
+import NewLogo from "../../images/svg/new_logo/new_logo";
 import { AuthContext } from "../../providers/auth_provider/auth_provider";
 import { rich_black, skobeloff } from "../../utilities/themes";
 
@@ -90,15 +91,17 @@ const LoginPage = () => {
                 onSubmit={async () => {
                   setLoading(true);
                   if (!createNew) {
-                    try {
-                      await context.signIn(email, password);
-                      setLoading(false);
-                      navigate("/");
-                    } catch (error) {
-                      setLoading(false);
-                      setError(error);
-                      setSnackbarOpen(true);
-                    }
+                    context
+                      .signIn(email, password)
+                      .then(() => {
+                        setLoading(false);
+                        navigate("/");
+                      })
+                      .catch((error) => {
+                        setLoading(false);
+                        setError(error);
+                        setSnackbarOpen(true);
+                      });
                   } else {
                     try {
                       await context.createNewUser(email, password, user_type);
@@ -113,8 +116,11 @@ const LoginPage = () => {
                 }}
               >
                 <Stack justifyContent={"start"} spacing={2}>
+                  <Stack direction="row" justifyContent={"center"}>
+                    <NewLogo width={"50%"} />
+                  </Stack>
                   <Typography variant="h3" color={rich_black}>
-                    Mental health app
+                    Therapy4You
                   </Typography>
                   <Typography component={"span"} color={skobeloff}>
                     {!createNew ? <>Log in</> : <>Create a new account</>}

@@ -21,14 +21,24 @@ import {
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import UpcomingSession from "../../../utilities/shared_components/upcoming_session";
+import { useSelector } from "react-redux";
 
 const HomePage = () => {
   const [anim, setAnim] = useState(false);
-  const [session /*,setSession*/] = useState(true);
-  const [starting /*,setSession*/] = useState(false);
+  const [starting, setStarting] = useState(false);
+
+  const allocated_sessions = useSelector((state) => {
+    return state.patient_sessions.sessionsWithDoctors;
+  });
 
   useEffect(() => {
+    if (allocated_sessions.length > 0) {
+      setTimeout(() => {
+        setStarting(true);
+      }, 30000);
+    }
     setAnim(true);
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -38,7 +48,7 @@ const HomePage = () => {
           <Stack pl={3} spacing={2}>
             <Lines width={"12vw"} />
             <Typography variant="h4" color={skobeloff} fontWeight={600}>
-              {!starting ? "Welcome Daniel" : "Dr Sarah is arriving soon"}
+              {!starting ? "Welcome Josh" : "Dr Sarah is arriving soon"}
             </Typography>
             {!starting ? (
               <>
@@ -54,7 +64,7 @@ const HomePage = () => {
                   </Button>
                 </Link>
                 <Typography component="span" color={rich_black}>
-                  Some consoling text
+                  We connect people with therapists they can trust.
                 </Typography>
               </>
             ) : (
@@ -99,7 +109,7 @@ const HomePage = () => {
                   Upcoming sessions
                 </Typography>
               </Stack>
-              {session ? (
+              {allocated_sessions.length > 0 ? (
                 <UpcomingSession />
               ) : (
                 <Typography component={"span"} color={rich_black}>
@@ -119,18 +129,20 @@ const HomePage = () => {
               How it works
             </Typography>
           </Stack>
-          <Stack>
+          <Stack spacing={2}>
             <Typography component={"span"} color={rich_black}>
-              1. This happens
+              1. Click on the book appointment button
             </Typography>
             <Typography component={"span"} color={rich_black}>
-              2. That happens
+              2. Describe what your currently going through and your preferred
+              date of meeting a therapist
             </Typography>
             <Typography component={"span"} color={rich_black}>
-              3. Something else happens
+              3. We will find a therapist for you based off of your settings
             </Typography>
             <Typography component={"span"} color={rich_black}>
-              4. Done
+              4. Depending on whether you chose a physical or virtual meeting,
+              the therapist will meet with you on the specified date.
             </Typography>
           </Stack>
         </Stack>

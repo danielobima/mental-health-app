@@ -6,9 +6,19 @@ import "./doc_home_page.scss";
 import { NewReleases, ReceiptLongRounded } from "@mui/icons-material";
 import UpcomingSession from "../../../utilities/shared_components/upcoming_session";
 import NewSession from "../../../utilities/shared_components/new_session";
+import { josh, michelle } from "../../../models/patient_model";
+import {
+  allocated_session,
+  allocated_session2,
+} from "../../../models/sessions_model";
+import CompareDate from "./utilities/compareDate";
 
 const DocHomePage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [newSesisons, setNewSessions] = useState([""]);
+
+  const [mySessions, setMySessions] = useState([allocated_session]);
+  const patients = [josh, michelle];
 
   function onChange(nextValue) {
     setSelectedDate(nextValue);
@@ -44,7 +54,25 @@ const DocHomePage = () => {
             Upcoming sessions
           </Typography>
         </Stack>
-        <UpcomingSession />
+        <Stack spacing={2}>
+          {mySessions
+            .filter((session) => CompareDate(session.date, selectedDate))
+            .map((session) => (
+              <UpcomingSession
+                name={
+                  patients.find(
+                    (patient) => patient.patient_id === session.patient_id
+                  ).full_name
+                }
+                profile_url={
+                  patients.find(
+                    (patient) => patient.patient_id === session.patient_id
+                  ).profile_photo
+                }
+                date={session.date}
+              />
+            ))}
+        </Stack>
       </Stack>
       <Stack
         width={"35%"}
@@ -60,7 +88,18 @@ const DocHomePage = () => {
             New sessions
           </Typography>
         </Stack>
-        <NewSession />
+        {newSesisons.map((session, index) => (
+          <NewSession
+            name={josh.full_name}
+            date={new Date("2022-8-25")}
+            profile_url={josh.profile_photo}
+            key={index}
+            onAccept={() => {
+              setNewSessions([]);
+              setMySessions([allocated_session2, allocated_session]);
+            }}
+          />
+        ))}
       </Stack>
     </Stack>
   );

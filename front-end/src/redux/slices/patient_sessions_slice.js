@@ -6,7 +6,7 @@ const initialState = {
 };
 
 export const patientSessionsSlice = createSlice({
-  name: "patientSessionsSlice",
+  name: "patient_sessions",
   initialState,
   reducers: {
     setSessions: (state, action) => {
