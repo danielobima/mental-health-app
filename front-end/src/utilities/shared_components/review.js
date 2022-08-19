@@ -1,14 +1,14 @@
 import { Avatar, Paper, Rating, Stack, Typography } from "@mui/material";
-import josh from "../../images/jpg/josh.jpg";
+import spencer from "../../images/jpg/spencer.jpg";
 import { rich_black, rich_grey } from "../themes";
 
 const sampleDescription =
   "I was going through a really tough time. She understood my problem and helped me gain insight on how to solve it.";
 const Review = ({
-  name = "Josh",
-  profile_url = josh,
+  name = "Spencer",
+  profile_url = spencer,
   desc = sampleDescription,
-  date = new Date(Date.now()),
+  date = new Date("2022-07-26"),
 }) => {
   return (
     <Paper
