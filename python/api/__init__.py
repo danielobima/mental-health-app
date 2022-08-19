@@ -4,7 +4,7 @@ import os
 from flask import Flask
 import firebase_admin
 from firebase_admin import credentials
-from .routes import hello
+from .routes import *
 
 
 def create_app(test_config=None):
@@ -34,6 +34,16 @@ def create_app(test_config=None):
 
     # a simple page that says hello
     app.register_blueprint(hello.bp)
+    app.register_blueprint(users.bp)
+
 
 
     return app
+
+
+
+
+
+
+
+#http://127.0.0.1:5000/hello

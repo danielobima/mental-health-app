@@ -1,14 +1,12 @@
-class Counselling:
-    Sessions = 0
-    def __init__(self,Date, Meeting_Type, Duration, Location, Therapist_Name, Patient_Name, Payment_Method):
-        self.Date = Date
-        self.Meeting_Type = Meeting_Type
-        self.Duration = Duration
-        self.Location = Location
-        self.Therapist_Name = Therapist_Name
-        self.Patient_Name = Patient_Name
-        self.Payment_Method = Payment_Method
-    Counselling.Sessions +=1
-    def MeetingDuration(self):
-        return ({self.Duration} 'hours')
+class Session:
+    def __init__(self, session_id, date, meeting_type, duration, location, doctor_id, patient_id, payment_method):
+        self.session_id = session_id
+        self.date = date
+        self.meeting_type = meeting_type
+        self.duration = duration
+        self.location = location
+        self.doctor_id = doctor_id
+        self.patient_id = patient_id
+        self.payment_method = payment_method
+
 
