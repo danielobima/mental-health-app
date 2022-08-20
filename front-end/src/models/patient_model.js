@@ -36,7 +36,7 @@ const michelle = new Patient({
   full_name: "Michelle Rose",
   age: 20,
   telephone: "0700000000",
-  email: "test2@mail.com",
+  email: "michelle@mail.com",
   location: "Roseview court, Kilimani",
   patient_id: "1asdkas30",
   profile_photo: michelle_photo,

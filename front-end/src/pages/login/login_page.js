@@ -12,12 +12,15 @@ import {
   Typography,
 } from "@mui/material";
 import { Stack } from "@mui/system";
+import { getDownloadURL, ref } from "firebase/storage";
 import { useContext, useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
 import { useNavigate } from "react-router-dom";
 import bgImage from "../../images/jpg/talking.jpg";
 import NewLogo from "../../images/svg/new_logo/new_logo";
 import { AuthContext } from "../../providers/auth_provider/auth_provider";
+import { StorageContext } from "../../providers/storage_provider/storage_provider";
+import { saveDoc } from "../../utilities/dbTest";
 import { rich_black, skobeloff } from "../../utilities/themes";
 
 const LoginPage = () => {
@@ -33,6 +36,7 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [user_type, setUserType] = useState(0);
+  const storageContext = useContext(StorageContext);
 
   const handleSnackbarClose = () => setSnackbarOpen(false);
 
@@ -64,8 +68,9 @@ const LoginPage = () => {
     if (!createNew) {
       context
         .signIn(email, password)
-        .then(() => {
+        .then((user) => {
           setLoading(false);
+
           navigate("/");
         })
         .catch((error) => {
@@ -76,8 +81,13 @@ const LoginPage = () => {
     } else {
       context
         .createNewUser(email, password, user_type)
-        .then(() => {
+        .then((user) => {
           setLoading(false);
+          getDownloadURL(
+            ref(storageContext.storage, "profile_photos/sarah.jpg")
+          ).then((url) => {
+            saveDoc(url, user.uid);
+          });
           navigate("/");
         })
         .catch((error) => {
@@ -197,7 +207,7 @@ const LoginPage = () => {
                         <CircularProgress size={"16px"} /> &nbsp;
                       </>
                     )}
-                    Log in
+                    {!createNew ? <>Log in</> : <>Create a new account</>}
                   </Button>
                   <Button
                     variant="outlined"

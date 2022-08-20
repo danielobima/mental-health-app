@@ -53,7 +53,7 @@ const DetailsPage = () => {
 
         <ValidatorForm
           className="form"
-          onSubmit={async () => {
+          onSubmit={() => {
             let patient = new Patient({
               full_name,
               age,
@@ -64,12 +64,11 @@ const DetailsPage = () => {
               patient_id,
               profile_photo,
             });
-            try {
-              await submitPatientDetails(patient);
-              navigator("/");
-            } catch (error) {
-              alert(error);
-            }
+            submitPatientDetails(patient)
+              .then(() => navigator("/"))
+              .catch((error) => {
+                alert(error);
+              });
           }}
         >
           <Stack width={"60%"} alignItems="stretch" spacing={2} pb="5vh">

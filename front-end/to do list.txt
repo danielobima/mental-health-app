@@ -1,4 +1,4 @@
-
+Add error snackbar on details pages
 api calls for finding sessions
 
 

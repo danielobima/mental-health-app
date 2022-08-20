@@ -37,7 +37,8 @@ def create_app(test_config=None):
     app.register_blueprint(hello.bp)
     app.register_blueprint(users.bp)
     app.register_blueprint(session.bp)
-
+    app.register_blueprint(patient.bp)
+    app.register_blueprint(doctor.bp)
 
 
     return app

@@ -8,6 +8,9 @@ const setUserOnDb = (user_id, user_type) =>
       user_id,
       user_type,
     });
+    console.log({
+      ...user,
+    });
     axios
       .post(`${baseURL}/users/new`, {
         user: {

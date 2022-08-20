@@ -26,8 +26,8 @@ const AuthProvider = ({ children }) => {
       signInWithEmailAndPassword(auth, email, password)
         .then((user) => {
           validateUser(user.user)
-            .then((userDetailsAndType) => {
-              resolve(userDetailsAndType);
+            .then(() => {
+              resolve(user.user);
             })
             .catch((error) => {
               reject(error);
@@ -40,13 +40,13 @@ const AuthProvider = ({ children }) => {
   const createNewUser = (email, password, user_type) =>
     new Promise((resolve, reject) => {
       createUserWithEmailAndPassword(auth, email, password)
-        .then((user) => {
-          setUserOnDb(user.uid, user_type)
+        .then((userCred) => {
+          setUserOnDb(userCred.user.uid, user_type)
             .then(() => {
-              setUserId(user.uid);
+              setUserId(userCred.user.uid);
               setUserType(user_type);
-              setUser(user);
-              resolve(user);
+              setUser(userCred.user);
+              resolve(userCred.user);
             })
             .catch((error) => {
               reject(error);

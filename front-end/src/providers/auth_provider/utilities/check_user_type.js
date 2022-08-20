@@ -15,9 +15,12 @@ const checkUser = (user_id) =>
         let result = {};
         result.user_type = response.data.user_type;
         if (response.data.user_type === 0) {
-          result.user_details = new Patient(response.data.user_details);
+          if (response.data.user_details) {
+            result.user_details = new Patient(response.data.user_details);
+          }
         } else if (response.data.user_type === 1) {
-          result.user_details = new Doctor(response.data.user_details);
+          if (response.data.user_details)
+            result.user_details = new Doctor(response.data.user_details);
         }
         resolve(result);
       })

@@ -22,7 +22,7 @@ class Doctor {
 const dr_rachel = new Doctor({
   full_name: "Dr Rachel",
   telephone: "0100000000",
-  email: "test3@mail.com",
+  email: "rachel@mail.com",
   location: "Amboseli Drive, Roselyn Gardens",
   religion: "Christian",
   doctor_id: "2w79384yh",
@@ -31,8 +31,8 @@ const dr_rachel = new Doctor({
 const dr_sarah = new Doctor({
   full_name: "Dr Sarah",
   telephone: "0100000000",
-  email: "test3@mail.com",
-  location: "Amboseli Drive, Roselyn Gardens",
+  email: "sarah@mail.com",
+  location: "Donald Court, Lavington Springs Estate",
   religion: "Christian",
   doctor_id: "2w79384yh",
   profile_photo: dr_rachel_photo,

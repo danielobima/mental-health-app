@@ -8,17 +8,20 @@ import AuthProvider from "./providers/auth_provider/auth_provider";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./utilities/themes";
 import DbProvider from "./providers/db_provider/db_provider";
+import StorageProvider from "./providers/storage_provider/storage_provider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <AuthProvider>
       <DbProvider>
-        <ThemeProvider theme={theme}>
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
-        </ThemeProvider>
+        <StorageProvider>
+          <ThemeProvider theme={theme}>
+            <BrowserRouter>
+              <AppRoutes />
+            </BrowserRouter>
+          </ThemeProvider>
+        </StorageProvider>
       </DbProvider>
     </AuthProvider>
   </React.StrictMode>

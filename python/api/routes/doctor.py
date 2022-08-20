@@ -1,14 +1,15 @@
 from flask import Flask, request
 from flask import Blueprint
 from firebase_admin import db
-from.models import doctor_model.Doctor
+from .models.doctor_model import Doctor
+
+bp = Blueprint('doctor', __name__,url_prefix= '/doctor')
 
 
-bp = Blueprint('doctor',__name__,'/doctor')
-
-@bp.route("/doctor/add_details", methods= ['POST'])
-
+@bp.route("/add_details", methods=['POST'])
 def add_details():
-    data = request.json
+    data = request.json['doctor']
     doctor_id = data['doctor_id']
-    new_doctor = Doctor(data['full_name'],data['age'],data['telephone'],data['email'],data['location'],data['religion'],data['doctor_id'],data['profile_photo'])
+    new_doctor = Doctor(**data)
+    db.reference('/doctors/' + doctor_id).set(new_doctor.__dict__)
+    return 'success'

@@ -3,6 +3,7 @@ import { ref, set } from "firebase/database";
 import { v4 } from "uuid";
 import axios from "axios";
 import { baseURL } from "..";
+import Doctor, { dr_sarah } from "../models/doctor_model";
 
 const pushRandSession = (db) => {
   let session_id = v4();
@@ -18,6 +19,22 @@ const pushRandSession = (db) => {
   set(ref(db, `/sessions/${session_id}`), { ...session }).catch((error) =>
     alert(error)
   );
+};
+
+const saveDoc = (photoUrl, id) => {
+  let newDoc = new Doctor({
+    ...dr_sarah,
+    doctor_id: id,
+    profile_photo: photoUrl,
+  });
+  axios
+    .post(`${baseURL}/doctor/add_details`, {
+      doctor: {
+        ...newDoc,
+      },
+    })
+    .then((response) => alert(response.data))
+    .catch((error) => alert(error));
 };
 
 const testApi = () => {
@@ -41,4 +58,4 @@ const testApi = () => {
     .then((response) => console.log(response.data));
 };
 
-export { pushRandSession, testApi };
+export { pushRandSession, testApi, saveDoc };

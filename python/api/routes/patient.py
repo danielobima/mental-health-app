@@ -8,10 +8,11 @@ bp = Blueprint('patient', __name__,url_prefix='/patient')
 
 @bp.route("/add_details", methods=['POST'])
 def add_details():
-    data = request.json
+    data = request.json['patient']
     patient_id = data['patient_id']
-    new_patient = Patient(data['full_name'], data['age'], data['telephone'], data['email'], data['location'],
-                          data['religion_specification'], data['patient_id'], data['profile_photo'])
+    new_patient = Patient(**data)
+    db.reference('/patients/'+patient_id).set(new_patient.__dict__)
+    return 'success'
 
 
 @bp.route('/get_doctors', methods=['GET'])
