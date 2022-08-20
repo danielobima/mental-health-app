@@ -18,23 +18,25 @@ import {
   ReceiptLongRounded,
   TipsAndUpdatesOutlined,
 } from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import UpcomingSession from "../../../utilities/shared_components/upcoming_session";
+import { AuthContext } from "../../../providers/auth_provider/auth_provider";
+import getSessions from "../../../utilities/get_sessions";
 
 const HomePage = () => {
   const [anim, setAnim] = useState(false);
-  const [starting, setStarting] = useState(false);
+  const [starting] = useState(false);
 
-  const [allocated_sessions] = useState([]);
+  const [sessions, setSessions] = useState([]);
+  const authContext = useContext(AuthContext);
 
   useEffect(() => {
-    if (allocated_sessions.length > 0) {
-      setTimeout(() => {
-        setStarting(true);
-      }, 30000);
-    }
     setAnim(true);
+
+    getSessions(authContext.user_id, authContext.user_type).then((sessions) => {
+      setSessions(sessions);
+    });
     // eslint-disable-next-line
   }, []);
 
@@ -60,6 +62,7 @@ const HomePage = () => {
                     Book an appointment
                   </Button>
                 </Link>
+
                 <Typography component="span" color={rich_black}>
                   We connect people with therapists they can trust.
                 </Typography>
@@ -106,8 +109,15 @@ const HomePage = () => {
                   Upcoming sessions
                 </Typography>
               </Stack>
-              {allocated_sessions.length > 0 ? (
-                <UpcomingSession />
+              {sessions.length > 0 ? (
+                sessions.map((session) => (
+                  <UpcomingSession
+                    id={session.doctor_id}
+                    date={session.date}
+                    mode={session.meeting_type}
+                    key={session.session_id}
+                  />
+                ))
               ) : (
                 <Typography component={"span"} color={rich_black}>
                   You have no upcoming sessions

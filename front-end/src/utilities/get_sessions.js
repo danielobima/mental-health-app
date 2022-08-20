@@ -1,7 +1,8 @@
 import axios from "axios";
 import { baseURL } from "..";
+import Session from "../models/sessions_model";
 
-const getSessionIds = (user_id, user_type) =>
+const getSessions = (user_id, user_type) =>
   new Promise((resolve, reject) => {
     axios
       .get(`${baseURL}/session/get_sessions`, {
@@ -11,12 +12,15 @@ const getSessionIds = (user_id, user_type) =>
         },
       })
       .then((response) => {
-        console.log(response.data);
-        resolve(response);
+        let sessions = Object.values(response.data).map(
+          (raw) => new Session({ ...raw })
+        );
+
+        resolve(sessions);
       })
       .catch((error) => {
         reject(error);
       });
   });
 
-export default getSessionIds;
+export default getSessions;

@@ -20,10 +20,15 @@ def new_user():
 def get_user_type():
     user_id = request.args.get('user_id')
     user_type = db.reference("users/" + user_id + '/user_type').get()
-    user_details = False
-    if user_type == 0:
-        user_details = db.reference('patients/' + user_id).get()
-    else:
-        user_details = db.reference('doctors/' + user_id).get()
+    user_details = db.reference(('patients/', 'doctors/')[int(user_type)] + user_id).get()
 
     return {'user_type': user_type, 'user_details': user_details}
+
+
+@bp.route('/get_user', methods=['GET'])
+def get_user():
+    user_id = request.args.get('user_id')
+    user_type = db.reference("users/" + user_id + '/user_type').get()
+    user_details = db.reference(('patients/', 'doctors/')[int(user_type)] + user_id).get()
+
+    return user_details

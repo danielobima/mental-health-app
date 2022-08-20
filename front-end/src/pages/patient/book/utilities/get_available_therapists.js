@@ -11,7 +11,6 @@ const getAvailableTherapists = () =>
         for (let therapist of Object.values(response.data)) {
           therapists.push(new Doctor({ ...therapist }));
         }
-        console.log(therapists);
         resolve(therapists);
       })
       .catch((error) => {

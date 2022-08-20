@@ -45,7 +45,6 @@ const BookPage = () => {
     const therapist = availableTherapists.find(
       (therapist) => therapist.doctor_id === id
     );
-    console.log(therapist);
     setSelectedTherapist(therapist);
     setStage(3);
   };

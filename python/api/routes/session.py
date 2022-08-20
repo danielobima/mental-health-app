@@ -25,4 +25,9 @@ def add_details():
 def get_sessions():
     user_type = request.args.get('user_type')
     user_id = request.args.get('user_id')
-    return db.reference('/session_allocation/').order_by_child('date_created').get()
+    all_sessions = db.reference('/session_allocation/').get()
+    sessions = {}
+    for key in all_sessions:
+        if user_id == all_sessions[key][('patient_id', 'doctor_id')[int(user_type)]]:
+            sessions[key] = db.reference('/sessions/'+key).get()
+    return sessions

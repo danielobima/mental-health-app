@@ -1,5 +1,5 @@
 Add error snackbar on details pages
-Handle errors on get doctors method in book page utility
+Handle errors on get available therapists method in book page utility
 api calls for finding sessions
 
 
