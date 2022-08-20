@@ -3,10 +3,10 @@ from flask import Blueprint
 from firebase_admin import db
 
 
-bp = Blueprint('users',__name__, '/users')
+bp = Blueprint('users',__name__,url_prefix='/users')
 
 
-@bp.route('/users', methods=['GET'])
+@bp.route('/new', methods=['GET'])
 def hi():
     args = request.args
     user_id = args.get("user_id")

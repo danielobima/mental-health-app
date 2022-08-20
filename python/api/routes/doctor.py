@@ -1,7 +1,7 @@
 from flask import Flask, request
 from flask import Blueprint
 from firebase_admin import db
-from.models import doctor.Doctor
+from.models import doctor_model.Doctor
 
 
 bp = Blueprint('doctor',__name__,'/doctor')

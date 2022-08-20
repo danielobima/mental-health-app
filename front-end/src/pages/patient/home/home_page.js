@@ -18,17 +18,13 @@ import {
   ReceiptLongRounded,
   TipsAndUpdatesOutlined,
 } from "@mui/icons-material";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import UpcomingSession from "../../../utilities/shared_components/upcoming_session";
-import { DbContext } from "../../../providers/db_provider/db_provider";
-import { pushRandSession } from "../../../utilities/dbTest";
-import sessionListener from "../../../utilities/session_listener";
 
 const HomePage = () => {
   const [anim, setAnim] = useState(false);
   const [starting, setStarting] = useState(false);
-  const db = useContext(DbContext);
 
   const [allocated_sessions] = useState([]);
 

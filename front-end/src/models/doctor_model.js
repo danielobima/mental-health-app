@@ -28,6 +28,15 @@ const dr_rachel = new Doctor({
   doctor_id: "2w79384yh",
   profile_photo: dr_rachel_photo,
 });
+const dr_sarah = new Doctor({
+  full_name: "Dr Sarah",
+  telephone: "0100000000",
+  email: "test3@mail.com",
+  location: "Amboseli Drive, Roselyn Gardens",
+  religion: "Christian",
+  doctor_id: "2w79384yh",
+  profile_photo: dr_rachel_photo,
+});
 
 export { dr_rachel };
 export default Doctor;

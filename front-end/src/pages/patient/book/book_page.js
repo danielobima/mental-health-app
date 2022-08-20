@@ -12,13 +12,16 @@ import {
   TextareaAutosize,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Illus2 from "../../../images/svg/illus2/illus2";
 import dotAnim from "../../../utilities/dotAnim";
 import { rich_black, rich_grey, skobeloff } from "../../../utilities/themes";
 import rachel from "../../../images/jpg/rachel.jpg";
 import Review from "../../../utilities/shared_components/review";
 import { useNavigate } from "react-router-dom";
+import postSession from "./utilities/post_session";
+import { AuthContext } from "../../../providers/auth_provider/auth_provider";
+import ErrorSnackBar from "../../../utilities/errorSnackBar";
 
 const BookPage = () => {
   const [details, setDetails] = useState("");
@@ -28,7 +31,16 @@ const BookPage = () => {
   const [date, setDate] = useState("mm/dd/yyyy");
   const [causes, setCauses] = useState("");
   const [mode, setMode] = useState("Physical");
+  const [error, setError] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const errorMsg = (msg) => {
+    setError(msg);
+    setSnackbarOpen(true);
+  };
   const navigator = useNavigate();
+
+  const authContext = useContext(AuthContext);
 
   const simulation = true;
 
@@ -173,6 +185,14 @@ const BookPage = () => {
                 onClick={() => {
                   if (simulation) {
                     navigator("/");
+                  } else {
+                    postSession(
+                      new Date(date).getTime(),
+                      mode,
+                      authContext.user_id
+                    )
+                      .then(() => navigator("/"))
+                      .catch((error) => errorMsg(error));
                   }
                 }}
               >
@@ -192,6 +212,11 @@ const BookPage = () => {
       <Stack width={"40%"} direction="column-reverse">
         <Illus2 />
       </Stack>
+      <ErrorSnackBar
+        error={error}
+        snackbarOpen={snackbarOpen}
+        setSnackbarOpen={setSnackbarOpen}
+      />
     </Stack>
   );
 };
