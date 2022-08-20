@@ -38,5 +38,5 @@ const dr_sarah = new Doctor({
   profile_photo: dr_rachel_photo,
 });
 
-export { dr_rachel };
+export { dr_rachel, dr_sarah };
 export default Doctor;

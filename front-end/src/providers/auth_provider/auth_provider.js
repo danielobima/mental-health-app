@@ -7,6 +7,7 @@ import {
   signOut,
 } from "firebase/auth";
 import checkUser from "./utilities/check_user_type";
+import setUserOnDb from "./utilities/set_user_db";
 
 const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
@@ -15,9 +16,7 @@ const AuthProvider = ({ children }) => {
 
   /** A user identification string */
   const [user_id, setUserId] = useState("");
-
   const [user, setUser] = useState();
-
   const [user_details, setUserDetails] = useState(false);
   const [user_type, setUserType] = useState(false);
 
@@ -42,10 +41,16 @@ const AuthProvider = ({ children }) => {
     new Promise((resolve, reject) => {
       createUserWithEmailAndPassword(auth, email, password)
         .then((user) => {
-          setUserId(user.uid);
-          setUserType(user_type);
-          setUser(user);
-          resolve(user);
+          setUserOnDb(user.uid, user_type)
+            .then(() => {
+              setUserId(user.uid);
+              setUserType(user_type);
+              setUser(user);
+              resolve(user);
+            })
+            .catch((error) => {
+              reject(error);
+            });
         })
         .catch((error) => {
           reject(error.message);
