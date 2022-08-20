@@ -29,14 +29,15 @@ const Layout = () => {
   const [error, setError] = useState("");
   const handleSnackbarClose = () => setSnackbarOpen(false);
   useEffect(() => {
-    // if (!context.user_id || !context.user_type) {
-    //   //userId or user type is null hence the user is not authenticated,
-    //   navigator("/login");
-    // } else {
-    //   if (!context.user_details) {
-    //     navigator(context.userType === 0 ? "/details" : "/doc/details");
-    //   }
-    // }
+    if (!context.user_id || !context.user_type) {
+      //userId or user type is null hence the user is not authenticated,
+      navigator("/login");
+    } else {
+      // if (!context.user_details) {
+      //   navigator(context.userType === 0 ? "/details" : "/doc/details");
+      // }
+      navigator("/");
+    }
     // eslint-disable-next-line
   }, []);
   return (

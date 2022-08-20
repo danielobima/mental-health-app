@@ -8,6 +8,8 @@ class Session {
     patient_id,
     session_id,
     payment_method = Math.random() > 0.5 ? "Credit card" : "Mpesa",
+    desc,
+    category,
   }) {
     this.date = date;
     this.meeting_type = meeting_type;
@@ -17,6 +19,8 @@ class Session {
     this.patient_id = patient_id;
     this.session_id = session_id;
     this.payment_method = payment_method;
+    this.desc = desc;
+    this.category = category;
   }
 }
 

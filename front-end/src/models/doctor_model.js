@@ -1,13 +1,16 @@
 import dr_rachel_photo from "../images/jpg/rachel.jpg";
 class Doctor {
   constructor({
-    full_name,
-    telephone,
-    email,
-    location,
-    religion,
-    doctor_id,
-    profile_photo = "no photo",
+    full_name = "",
+    telephone = "",
+    email = "",
+    location = "",
+    religion = "",
+    doctor_id = "",
+    hourly = 2000,
+    profile_photo = "",
+    rating = 5,
+    desc = "",
   }) {
     this.full_name = full_name;
     this.telephone = telephone;
@@ -16,6 +19,9 @@ class Doctor {
     this.religion = religion;
     this.doctor_id = doctor_id;
     this.profile_photo = profile_photo;
+    this.hourly = hourly;
+    this.rating = rating;
+    this.desc = desc;
   }
 }
 
@@ -26,6 +32,7 @@ const dr_rachel = new Doctor({
   location: "Amboseli Drive, Roselyn Gardens",
   religion: "Christian",
   doctor_id: "2w79384yh",
+  hourly: 2000,
   profile_photo: dr_rachel_photo,
 });
 const dr_sarah = new Doctor({
@@ -35,6 +42,7 @@ const dr_sarah = new Doctor({
   location: "Donald Court, Lavington Springs Estate",
   religion: "Christian",
   doctor_id: "2w79384yh",
+  hourly: 2000,
   profile_photo: dr_rachel_photo,
 });
 

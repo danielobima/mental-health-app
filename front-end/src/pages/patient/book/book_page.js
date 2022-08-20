@@ -1,12 +1,14 @@
-import { CalendarTodayOutlined } from "@mui/icons-material";
+import { ArrowBack, CalendarTodayOutlined } from "@mui/icons-material";
 import {
   Avatar,
   Button,
   CircularProgress,
   Collapse,
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
+  Rating,
   Select,
   Stack,
   TextareaAutosize,
@@ -16,23 +18,37 @@ import { useContext, useState } from "react";
 import Illus2 from "../../../images/svg/illus2/illus2";
 import dotAnim from "../../../utilities/dotAnim";
 import { rich_black, rich_grey, skobeloff } from "../../../utilities/themes";
-import rachel from "../../../images/jpg/rachel.jpg";
 import Review from "../../../utilities/shared_components/review";
 import { useNavigate } from "react-router-dom";
 import postSession from "./utilities/post_session";
 import { AuthContext } from "../../../providers/auth_provider/auth_provider";
 import ErrorSnackBar from "../../../utilities/errorSnackBar";
+import AvailableTherapist from "./utilities/available_therapist";
+import Doctor from "../../../models/doctor_model";
+import getAvailableTherapists from "./utilities/get_available_therapists";
 
 const BookPage = () => {
   const [details, setDetails] = useState("");
-  //stages are request, searching, offer.
-  const [stage, setStage] = useState("request");
+  //stages are request, searching, available_docs, offer.
+  const [stage, setStage] = useState(0);
   const [dots, setDots] = useState(".");
   const [date, setDate] = useState("mm/dd/yyyy");
   const [causes, setCauses] = useState("");
   const [mode, setMode] = useState("Physical");
   const [error, setError] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const [availableTherapists, setAvailableTherapists] = useState([]);
+  const [selectedTherapist, setSelectedTherapist] = useState(new Doctor({}));
+
+  const selectTherapist = (id) => {
+    const therapist = availableTherapists.find(
+      (therapist) => therapist.doctor_id === id
+    );
+    console.log(therapist);
+    setSelectedTherapist(therapist);
+    setStage(3);
+  };
 
   const errorMsg = (msg) => {
     setError(msg);
@@ -42,20 +58,62 @@ const BookPage = () => {
 
   const authContext = useContext(AuthContext);
 
-  const simulation = true;
+  const simulation = false;
+
+  const submitRequest = () => {
+    setStage(1);
+    dotAnim(setDots);
+    if (simulation) {
+      setTimeout(() => {
+        setStage(2);
+      }, 5000);
+    } else {
+      getAvailableTherapists().then((therapists) => {
+        setAvailableTherapists(therapists);
+        setStage(2);
+      });
+    }
+  };
+
+  const bookAppointment = () => {
+    if (simulation) {
+      navigator("/");
+    } else {
+      postSession(
+        new Date(date).getTime(),
+        mode,
+        authContext.user_id,
+        selectedTherapist.doctor_id,
+        details,
+        causes
+      )
+        .then(() => navigator("/"))
+        .catch((error) => errorMsg(error));
+    }
+  };
 
   return (
     <Stack width={"100%"} height={"100%"} direction={"row"}>
       <Stack width={"60%"} pl={3} pt={"10vh"} spacing={2}>
         <Stack direction={"row"} spacing={1} alignItems={"center"}>
-          <CalendarTodayOutlined fontSize="large" sx={{ color: skobeloff }} />
+          {stage > 0 ? (
+            <IconButton
+              onClick={() =>
+                setStage((stage) => (stage !== 2 ? --stage : stage - 2))
+              }
+            >
+              <ArrowBack />
+            </IconButton>
+          ) : (
+            <CalendarTodayOutlined fontSize="large" sx={{ color: skobeloff }} />
+          )}
 
           <Typography variant="h4" color={skobeloff} fontWeight={600}>
             Book an appointment
           </Typography>
         </Stack>
 
-        <Collapse in={stage === "request"} sx={{ width: "100%" }}>
+        <Collapse in={stage === 0} sx={{ width: "100%" }}>
           <Stack spacing={2}>
             <Typography component="span" color={rich_black}>
               Please describe your issue
@@ -123,15 +181,7 @@ const BookPage = () => {
               <Button
                 sx={{ color: "white", width: "fit-content" }}
                 variant="contained"
-                onClick={() => {
-                  setStage("searching");
-                  if (simulation) {
-                    setTimeout(() => {
-                      setStage("offer");
-                    }, 5000);
-                  }
-                  dotAnim(setDots);
-                }}
+                onClick={() => submitRequest()}
               >
                 Submit
               </Button>
@@ -144,68 +194,74 @@ const BookPage = () => {
             </Stack>
           </Stack>
         </Collapse>
-        <Collapse in={stage === "searching"} sx={{ width: "100%" }}>
+        <Collapse in={stage === 1} sx={{ width: "100%" }}>
           <Stack alignItems={"center"} pt="10vh" width="100%" spacing={2}>
             <CircularProgress size={"7vw"} />
             <Typography color={rich_black} variant="h6">
-              Searching for a therapist{dots}
+              Searching for therapists{dots}
             </Typography>
           </Stack>
         </Collapse>
-        <Collapse in={stage === "offer"}>
-          <Stack alignItems={"center"} width="100%" spacing={2}>
-            <Avatar sx={{ width: "25vh", height: "25vh" }} src={rachel}>
-              H
-            </Avatar>
-            <Stack alignItems={"center"}>
-              <Typography variant="h6" color={rich_black}>
-                Dr Rachel
-              </Typography>
-              <Stack
-                direction={"row"}
-                spacing={4}
-                justifyContent={"space-between"}
+        <Collapse in={stage === 2} sx={{ width: "100%" }}>
+          <Stack spacing={2}>
+            <Typography variant="h6" color={rich_black} fontWeight={600}>
+              Available therapists
+            </Typography>
+            {availableTherapists.map((therapist) => (
+              <AvailableTherapist
+                profile_photo={therapist.profile_photo}
+                full_name={therapist.full_name}
+                desc={therapist.desc}
+                rating={5}
+                id={therapist.doctor_id}
+                select={selectTherapist}
+              />
+            ))}
+          </Stack>
+        </Collapse>
+        <Collapse in={stage === 3}>
+          <Stack width="100%" spacing={2} pb="5vh">
+            <Stack direction="row" spacing={2}>
+              <Avatar
+                sx={{ width: "25vh", height: "25vh" }}
+                src={selectedTherapist.profile_photo}
               >
-                <Typography component="span" color={rich_grey}>
-                  Nairobi hospital
+                Photo
+              </Avatar>
+              <Stack spacing={1}>
+                <Typography variant="h6" color={rich_black}>
+                  {selectedTherapist.full_name}
                 </Typography>
-                <Typography component="span" color={rich_grey}>
-                  {new Date(date).toDateString()}
+                <Rating
+                  size="small"
+                  color="primary"
+                  value={selectedTherapist.rating}
+                  readOnly
+                />
+                <Typography component="span" color={rich_black}>
+                  {selectedTherapist.desc}
                 </Typography>
               </Stack>
             </Stack>
-            <Stack
-              direction={"row"}
-              width="40%"
-              justifyContent={"space-between"}
-            >
+            <Stack direction="row" spacing={2} alignItems="center">
               <Button
                 variant="contained"
-                sx={{ color: "white" }}
-                onClick={() => {
-                  if (simulation) {
-                    navigator("/");
-                  } else {
-                    postSession(
-                      new Date(date).getTime(),
-                      mode,
-                      authContext.user_id
-                    )
-                      .then(() => navigator("/"))
-                      .catch((error) => errorMsg(error));
-                  }
-                }}
+                sx={{ color: "white", width: "fit-content" }}
+                onClick={() => bookAppointment()}
               >
-                Accept
+                Book appointment for {new Date(date).toDateString()}
               </Button>
-              <Button variant="outlined">Decline</Button>
-            </Stack>
-            <Stack alignItems={"start"} width="70%">
-              <Typography variant="h6" color={rich_black}>
-                Reviews
+              <Typography component="span" color={rich_grey}>
+                {selectedTherapist.hourly > 0
+                  ? `KES ${selectedTherapist.hourly}/hr`
+                  : "Free"}
               </Typography>
-              <Review />
             </Stack>
+
+            <Typography variant="h6" color={rich_black}>
+              Reviews
+            </Typography>
+            <Review />
           </Stack>
         </Collapse>
       </Stack>
