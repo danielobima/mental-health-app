@@ -19,9 +19,6 @@ import { rich_black, rich_grey, skobeloff } from "../../../utilities/themes";
 import rachel from "../../../images/jpg/rachel.jpg";
 import Review from "../../../utilities/shared_components/review";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux/es/exports";
-import { setSessionsWithDoctors } from "../../../redux/slices/patient_sessions_slice";
-import { allocated_session } from "../../../models/sessions_model";
 
 const BookPage = () => {
   const [details, setDetails] = useState("");
@@ -32,7 +29,6 @@ const BookPage = () => {
   const [causes, setCauses] = useState("");
   const [mode, setMode] = useState("Physical");
   const navigator = useNavigate();
-  const dispatch = useDispatch();
 
   const simulation = true;
 
@@ -176,14 +172,6 @@ const BookPage = () => {
                 sx={{ color: "white" }}
                 onClick={() => {
                   if (simulation) {
-                    dispatch(
-                      setSessionsWithDoctors([
-                        {
-                          ...allocated_session,
-                          date: new Date(date),
-                        },
-                      ])
-                    );
                     navigator("/");
                   }
                 }}

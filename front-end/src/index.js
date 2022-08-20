@@ -4,24 +4,23 @@ import "./index.scss";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./routes/app_routes";
-import { Provider } from "react-redux";
-import { store } from "./redux/store";
 import AuthProvider from "./providers/auth_provider/auth_provider";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./utilities/themes";
+import DbProvider from "./providers/db_provider/db_provider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <AuthProvider>
+    <AuthProvider>
+      <DbProvider>
         <ThemeProvider theme={theme}>
           <BrowserRouter>
             <AppRoutes />
           </BrowserRouter>
         </ThemeProvider>
-      </AuthProvider>
-    </Provider>
+      </DbProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
 

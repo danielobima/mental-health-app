@@ -11,7 +11,7 @@ import {
   allocated_session,
   allocated_session2,
 } from "../../../models/sessions_model";
-import CompareDate from "./utilities/compareDate";
+import CompareDate from "../../../utilities/compareDate";
 
 const DocHomePage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
