@@ -1,7 +1,5 @@
-important
-Add button to view upcoming appointments in details
 
-
+Change appointments page to get appointment using url params instead of context to allow people to be able to reload
 Add error snackbar on details pages
 Check if session is starting using the session date
 Handle errors on get available therapists method in book page utility

@@ -106,7 +106,7 @@ const HomePage = () => {
                   sx={{ color: rich_black }}
                 />
                 <Typography variant="h6" color={rich_black} fontWeight={600}>
-                  Upcoming sessions
+                  Upcoming appointments
                 </Typography>
               </Stack>
               {sessions.length > 0 ? (
@@ -121,7 +121,7 @@ const HomePage = () => {
                 ))
               ) : (
                 <Typography component={"span"} color={rich_black}>
-                  You have no upcoming sessions
+                  You have no upcoming appointments
                 </Typography>
               )}
             </Stack>

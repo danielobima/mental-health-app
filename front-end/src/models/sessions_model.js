@@ -10,6 +10,7 @@ class Session {
     payment_method = Math.random() > 0.5 ? "Credit card" : "Mpesa",
     desc,
     category,
+    date_created = new Date(Date.now()).getTime(),
   }) {
     this.date = date;
     this.meeting_type = meeting_type;
@@ -21,6 +22,7 @@ class Session {
     this.payment_method = payment_method;
     this.desc = desc;
     this.category = category;
+    this.date_created = date_created;
   }
 }
 

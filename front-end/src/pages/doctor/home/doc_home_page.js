@@ -13,11 +13,18 @@ const DocHomePage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const [sessions, setSessions] = useState([]);
+
+  const [newSessions, setNewSessions] = useState([]);
   const authContext = useContext(AuthContext);
 
   useEffect(() => {
     getSessions(authContext.user_id, authContext.user_type).then((sessions) => {
+      var start = new Date(Date.now());
+      start.setHours(0, 0, 0, 0);
       setSessions(sessions);
+      setNewSessions(
+        sessions.filter((session) => session.date > start.getTime())
+      );
     });
     // eslint-disable-next-line
   }, []);
@@ -53,7 +60,7 @@ const DocHomePage = () => {
         <Stack direction="row" alignItems={"center"} spacing={1} mb="3vh">
           <ReceiptLongRounded fontSize="large" sx={{ color: rich_black }} />
           <Typography variant="h6" color={rich_black} fontWeight={600}>
-            Upcoming sessions
+            Upcoming appointments
           </Typography>
         </Stack>
         <Stack spacing={2}>
@@ -67,6 +74,7 @@ const DocHomePage = () => {
                 id={session.patient_id}
                 date={session.date}
                 session={session}
+                key={session.session_id}
               />
             ))}
         </Stack>
@@ -82,21 +90,18 @@ const DocHomePage = () => {
         <Stack direction="row" alignItems={"center"} spacing={1} mb="3vh">
           <NewReleases fontSize="large" sx={{ color: rich_black }} />
           <Typography variant="h6" color={rich_black} fontWeight={600}>
-            New sessions
+            New appointments
           </Typography>
         </Stack>
-        {/* {newSesisons.map((session, index) => (
-          <NewSession
-            name={josh.full_name}
-            date={new Date("2022-8-25")}
-            profile_url={josh.profile_photo}
-            key={index}
-            onAccept={() => {
-              setNewSessions([]);
-              setMySessions([allocated_session2, allocated_session]);
-            }}
+        {newSessions.map((session, index) => (
+          <UpcomingSession
+            mode={session.meeting_type}
+            id={session.patient_id}
+            date={session.date}
+            session={session}
+            key={session.session_id}
           />
-        ))} */}
+        ))}
       </Stack>
     </Stack>
   );

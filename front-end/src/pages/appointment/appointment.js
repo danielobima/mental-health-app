@@ -1,6 +1,6 @@
-import { Avatar, Stack, Typography } from "@mui/material";
+import { Avatar, Button, Stack, Typography } from "@mui/material";
 import Illus3 from "../../images/svg/illus3/illus3";
-import { rich_black, skobeloff } from "../../utilities/themes";
+import { rich_black, rich_grey, skobeloff } from "../../utilities/themes";
 import { CalendarMonthOutlined, Place } from "@mui/icons-material";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../providers/auth_provider/auth_provider";
@@ -57,17 +57,33 @@ const Appointment = () => {
             <Typography component="span" color={rich_black} fontSize={22}>
               {layoutContext.appointment.meeting_type}
             </Typography>
-            <Stack direction="row">
-              <Place
-                htmlColor={rich_black}
-                sx={{
-                  fontSize: 30,
-                }}
-              />
-              <Typography component="span" color={rich_black} fontSize={22}>
-                &nbsp;{layoutContext.appointment.location}
-              </Typography>
-            </Stack>
+            {layoutContext.appointment.meeting_type === "Physical" && (
+              <Stack direction="row" alignItems={"center"}>
+                <Place
+                  htmlColor={rich_black}
+                  sx={{
+                    fontSize: 30,
+                  }}
+                />
+                <Typography component="span" color={rich_black} fontSize={22}>
+                  &nbsp;{layoutContext.appointment.location}
+                </Typography>
+              </Stack>
+            )}
+            {authContext.user_type === 0 && (
+              <>
+                <br />
+                <Typography component="span" color={rich_grey} fontSize={18}>
+                  {name} will reach out to you to confirm additional details.
+                </Typography>
+              </>
+            )}
+            <Button
+              variant="contained"
+              sx={{ color: "white", mt: "1vh", width: "fit-content" }}
+            >
+              Contact
+            </Button>
             {/* <Button variant="contained" sx={{ color: "white", mt: "1vh" }}>
               I have arrived
             </Button> */}
