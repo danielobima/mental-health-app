@@ -29,5 +29,7 @@ def get_sessions():
     sessions = {}
     for key in all_sessions:
         if user_id == all_sessions[key][('patient_id', 'doctor_id')[int(user_type)]]:
-            sessions[key] = db.reference('/sessions/'+key).get()
+            sessions[key] = db.reference('/sessions/' + key).get()
     return sessions
+
+

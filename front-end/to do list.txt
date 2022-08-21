@@ -1,3 +1,7 @@
+important
+Add button to view upcoming appointments in details
+
+
 Add error snackbar on details pages
 Check if session is starting using the session date
 Handle errors on get available therapists method in book page utility

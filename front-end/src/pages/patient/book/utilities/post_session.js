@@ -8,7 +8,8 @@ const postSession = (
   patient_id,
   doctor_id,
   desc,
-  category
+  category,
+  location
 ) =>
   new Promise((resolve, reject) => {
     let session_id = v4();
@@ -16,7 +17,7 @@ const postSession = (
       date,
       doctor_id,
       duration: "",
-      location: "",
+      location: location,
       meeting_type,
       patient_id,
       session_id,

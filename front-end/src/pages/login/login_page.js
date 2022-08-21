@@ -66,8 +66,12 @@ const LoginPage = () => {
         .signIn(email, password)
         .then((user) => {
           setLoading(false);
-
-          navigate("/");
+          console.log(user.user_type);
+          if (user.user_type === 0) {
+            navigate("/");
+          } else {
+            navigate("/doc");
+          }
         })
         .catch((error) => {
           setLoading(false);

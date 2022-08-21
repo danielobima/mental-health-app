@@ -26,8 +26,8 @@ const AuthProvider = ({ children }) => {
       signInWithEmailAndPassword(auth, email, password)
         .then((user) => {
           validateUser(user.user)
-            .then(() => {
-              resolve(user.user);
+            .then((userDetailsAndType) => {
+              resolve(userDetailsAndType);
             })
             .catch((error) => {
               reject(error);
@@ -64,6 +64,7 @@ const AuthProvider = ({ children }) => {
       checkUser(user.uid)
         .then((userDetailsAndType) => {
           setUserId(user.uid);
+          console.log(userDetailsAndType);
           setUserDetails(userDetailsAndType.user_details);
           setUserType(userDetailsAndType.user_type);
           setUser(user);

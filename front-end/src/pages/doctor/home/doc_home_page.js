@@ -1,24 +1,26 @@
 import { Paper, Stack, Typography } from "@mui/material";
 import { rich_black, skobeloff, white_green } from "../../../utilities/themes";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Calendar } from "react-calendar";
 import "./doc_home_page.scss";
 import { NewReleases, ReceiptLongRounded } from "@mui/icons-material";
 import UpcomingSession from "../../../utilities/shared_components/upcoming_session";
-import NewSession from "../../../utilities/shared_components/new_session";
-import { josh, michelle } from "../../../models/patient_model";
-import {
-  allocated_session,
-  allocated_session2,
-} from "../../../models/sessions_model";
 import CompareDate from "../../../utilities/compareDate";
+import getSessions from "../../../utilities/get_sessions";
+import { AuthContext } from "../../../providers/auth_provider/auth_provider";
 
 const DocHomePage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [newSesisons, setNewSessions] = useState([""]);
 
-  const [mySessions, setMySessions] = useState([allocated_session]);
-  const patients = [josh, michelle];
+  const [sessions, setSessions] = useState([]);
+  const authContext = useContext(AuthContext);
+
+  useEffect(() => {
+    getSessions(authContext.user_id, authContext.user_type).then((sessions) => {
+      setSessions(sessions);
+    });
+    // eslint-disable-next-line
+  }, []);
 
   function onChange(nextValue) {
     setSelectedDate(nextValue);
@@ -55,21 +57,16 @@ const DocHomePage = () => {
           </Typography>
         </Stack>
         <Stack spacing={2}>
-          {mySessions
-            .filter((session) => CompareDate(session.date, selectedDate))
+          {sessions
+            .filter((session) =>
+              CompareDate(new Date(session.date), selectedDate)
+            )
             .map((session) => (
               <UpcomingSession
-                name={
-                  patients.find(
-                    (patient) => patient.patient_id === session.patient_id
-                  ).full_name
-                }
-                profile_url={
-                  patients.find(
-                    (patient) => patient.patient_id === session.patient_id
-                  ).profile_photo
-                }
+                mode={session.meeting_type}
+                id={session.patient_id}
                 date={session.date}
+                session={session}
               />
             ))}
         </Stack>
@@ -88,7 +85,7 @@ const DocHomePage = () => {
             New sessions
           </Typography>
         </Stack>
-        {newSesisons.map((session, index) => (
+        {/* {newSesisons.map((session, index) => (
           <NewSession
             name={josh.full_name}
             date={new Date("2022-8-25")}
@@ -99,7 +96,7 @@ const DocHomePage = () => {
               setMySessions([allocated_session2, allocated_session]);
             }}
           />
-        ))}
+        ))} */}
       </Stack>
     </Stack>
   );

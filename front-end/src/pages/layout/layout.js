@@ -15,19 +15,22 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import NewLogoWhite from "../../images/svg/new_logo_white/new_logo_white";
 import { AuthContext } from "../../providers/auth_provider/auth_provider";
 import { rich_black, white_green } from "../../utilities/themes";
 import LayoutLink from "./components/layout_link";
 
+const LayoutContext = createContext();
 const Layout = () => {
   const context = useContext(AuthContext);
   const navigator = useNavigate();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [error, setError] = useState("");
   const handleSnackbarClose = () => setSnackbarOpen(false);
+
+  const [appointment, setAppointment] = useState();
   useEffect(() => {
     if (!context.user_id || context.user_type === undefined) {
       //userId or user type is null hence the user is not authenticated,
@@ -92,7 +95,9 @@ const Layout = () => {
         </Stack>
       </Box>
       <Box sx={{ width: "88%", height: "100%" }}>
-        <Outlet />
+        <LayoutContext.Provider value={{ appointment, setAppointment }}>
+          <Outlet />
+        </LayoutContext.Provider>
       </Box>
       <Snackbar
         open={snackbarOpen}
@@ -111,8 +116,9 @@ const Layout = () => {
         <Stack direction="row-reverse" spacing={2}>
           <Avatar
             sx={{ width: "3vw", height: "3vw", boxShadow: "0px 3px 6px grey" }}
+            src={context.user_details ? context.user_details.profile_photo : ""}
           >
-            <Person htmlColor={white_green} />
+            {!context.user_details && <Person htmlColor={white_green} />}
           </Avatar>
           <IconButton sx={{ aspectRatio: "1/1" }} color="primary">
             <Notifications />
@@ -125,4 +131,5 @@ const Layout = () => {
     </Stack>
   );
 };
+export { LayoutContext };
 export default Layout;

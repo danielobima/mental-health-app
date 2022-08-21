@@ -12,6 +12,7 @@ import {
   Select,
   Stack,
   TextareaAutosize,
+  TextField,
   Typography,
 } from "@mui/material";
 import { useContext, useState } from "react";
@@ -37,6 +38,7 @@ const BookPage = () => {
   const [mode, setMode] = useState("Physical");
   const [error, setError] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [location, setLocation] = useState("");
 
   const [availableTherapists, setAvailableTherapists] = useState([]);
   const [selectedTherapist, setSelectedTherapist] = useState(new Doctor({}));
@@ -84,7 +86,8 @@ const BookPage = () => {
         authContext.user_id,
         selectedTherapist.doctor_id,
         details,
-        causes
+        causes,
+        location
       )
         .then(() => navigator("/"))
         .catch((error) => errorMsg(error));
@@ -113,7 +116,7 @@ const BookPage = () => {
         </Stack>
 
         <Collapse in={stage === 0} sx={{ width: "100%" }}>
-          <Stack spacing={2}>
+          <Stack spacing={2} pb="5vh">
             <Typography component="span" color={rich_black}>
               Please describe your issue
             </Typography>
@@ -161,6 +164,7 @@ const BookPage = () => {
                 <MenuItem value="Other">Other</MenuItem>
               </Select>
             </FormControl>
+
             <Typography component="span" color={rich_black}>
               What is your preferred mode of meeting
             </Typography>
@@ -170,12 +174,22 @@ const BookPage = () => {
                 labelId="mode-label"
                 label="Mode of meeting"
                 value={mode}
-                onChange={(event) => setMode(event.target.value)}
+                onChange={(event) => {
+                  setLocation("");
+                  setMode(event.target.value);
+                }}
               >
                 <MenuItem value="Physical">Physical</MenuItem>
                 <MenuItem value="Virtual">Virtual</MenuItem>
               </Select>
             </FormControl>
+            <Collapse in={mode === "Physical"}>
+              <TextField
+                value={location}
+                onChange={(event) => setLocation(event.target.value)}
+                label="Meeting location"
+              />
+            </Collapse>
             <Stack direction="row" justifyContent={"space-between"}>
               <Button
                 sx={{ color: "white", width: "fit-content" }}
@@ -194,7 +208,13 @@ const BookPage = () => {
           </Stack>
         </Collapse>
         <Collapse in={stage === 1} sx={{ width: "100%" }}>
-          <Stack alignItems={"center"} pt="10vh" width="100%" spacing={2}>
+          <Stack
+            alignItems={"center"}
+            pt="10vh"
+            width="100%"
+            spacing={2}
+            pb="5vh"
+          >
             <CircularProgress size={"7vw"} />
             <Typography color={rich_black} variant="h6">
               Searching for therapists{dots}
@@ -202,7 +222,7 @@ const BookPage = () => {
           </Stack>
         </Collapse>
         <Collapse in={stage === 2} sx={{ width: "100%" }}>
-          <Stack spacing={2}>
+          <Stack spacing={2} pb="5vh">
             <Typography variant="h6" color={rich_black} fontWeight={600}>
               Available therapists
             </Typography>

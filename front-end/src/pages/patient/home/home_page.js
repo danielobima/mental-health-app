@@ -116,6 +116,7 @@ const HomePage = () => {
                     date={session.date}
                     mode={session.meeting_type}
                     key={session.session_id}
+                    session={session}
                   />
                 ))
               ) : (
