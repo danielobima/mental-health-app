@@ -3,7 +3,6 @@ import {
   Avatar,
   Button,
   FormControl,
-  Input,
   InputLabel,
   MenuItem,
   Select,
@@ -18,7 +17,7 @@ import Doctor from "../../../models/doctor_model";
 import { AuthContext } from "../../../providers/auth_provider/auth_provider";
 import { submitDocDetails } from "../../../providers/auth_provider/utilities/submit_user_details";
 import { StorageContext } from "../../../providers/storage_provider/storage_provider";
-import { rich_grey, skobeloff } from "../../../utilities/themes";
+import { skobeloff } from "../../../utilities/themes";
 
 const DocDetailsPage = () => {
   const [profile_photo, setPhoto] = useState("");

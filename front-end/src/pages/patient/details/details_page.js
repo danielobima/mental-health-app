@@ -1,9 +1,8 @@
-import { Person, Place } from "@mui/icons-material";
+import { Person } from "@mui/icons-material";
 import {
   Avatar,
   Button,
   FormControl,
-  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -18,7 +17,7 @@ import Patient from "../../../models/patient_model";
 import { AuthContext } from "../../../providers/auth_provider/auth_provider";
 import { submitPatientDetails } from "../../../providers/auth_provider/utilities/submit_user_details";
 import { StorageContext } from "../../../providers/storage_provider/storage_provider";
-import { rich_grey, skobeloff } from "../../../utilities/themes";
+import { skobeloff } from "../../../utilities/themes";
 
 const DetailsPage = () => {
   const [profile_photo, setPhoto] = useState("");
