@@ -33,3 +33,7 @@ def get_sessions():
     return sessions
 
 
+@bp.route('/get_session', methods=['GET'])
+def get_session():
+    session_id = request.args.get('session_id')
+    return db.reference('/sessions/' + session_id).get()

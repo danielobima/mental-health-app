@@ -23,4 +23,18 @@ const getSessions = (user_id, user_type) =>
       });
   });
 
+const getSession = (session_id) =>
+  new Promise((resolve, reject) => {
+    axios
+      .get(`${baseURL}/session/get_session`, { params: { session_id } })
+      .then((response) => {
+        let session = new Session({ ...response.data });
+        resolve(session);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+
+export { getSession };
 export default getSessions;

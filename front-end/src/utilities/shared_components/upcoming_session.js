@@ -29,7 +29,11 @@ const UpcomingSession = ({ id, date, mode, session }) => {
 
   const select = () => {
     layoutContext.setAppointment(session);
-    navigate(authContext.user_type === 0 ? "/appointment" : "/doc/appointment");
+    navigate(
+      authContext.user_type === 0
+        ? `/appointment/${session.session_id}`
+        : `/doc/appointment/${session.session_id}`
+    );
   };
   return (
     <Collapse in>

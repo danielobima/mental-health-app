@@ -1,27 +1,47 @@
-import { Avatar, Button, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Stack,
+  Typography,
+} from "@mui/material";
 import Illus3 from "../../images/svg/illus3/illus3";
 import { rich_black, rich_grey, skobeloff } from "../../utilities/themes";
 import { CalendarMonthOutlined, Place } from "@mui/icons-material";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../providers/auth_provider/auth_provider";
-import { LayoutContext } from "../layout/layout";
 import getUserDetails from "../../utilities/get_user_details";
+import { getSession } from "../../utilities/get_sessions";
+import { useParams } from "react-router-dom";
+import Session from "../../models/sessions_model";
 
 const Appointment = () => {
   const authContext = useContext(AuthContext);
-  const layoutContext = useContext(LayoutContext);
+  const [session, setSession] = useState(new Session({}));
   const [profile_photo, setProfilePhoto] = useState("");
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [contactDialogOpen, setContactDialogOpen] = useState(false);
+  const { session_id } = useParams();
 
   useEffect(() => {
-    getUserDetails(
-      authContext.user_type === 0
-        ? layoutContext.appointment.doctor_id
-        : layoutContext.appointment.patient_id
-    ).then((user) => {
-      setName(user.full_name);
-      setProfilePhoto(user.profile_photo);
+    getSession(session_id).then((sesh) => {
+      setSession(sesh);
+      getUserDetails(
+        authContext.user_type === 0 ? sesh.doctor_id : sesh.patient_id
+      ).then((user) => {
+        setName(user.full_name);
+        setProfilePhoto(user.profile_photo);
+        setEmail(user.email);
+        setPhone(user.telephone);
+      });
     });
+
     // eslint-disable-next-line
   }, []);
 
@@ -52,12 +72,12 @@ const Appointment = () => {
               {name}
             </Typography>
             <Typography component="span" color={rich_black} fontSize={22}>
-              {new Date(layoutContext.appointment.date).toDateString()}
+              {new Date(session.date).toDateString()}
             </Typography>
             <Typography component="span" color={rich_black} fontSize={22}>
-              {layoutContext.appointment.meeting_type}
+              {session.meeting_type}
             </Typography>
-            {layoutContext.appointment.meeting_type === "Physical" && (
+            {session.meeting_type === "Physical" && (
               <Stack direction="row" alignItems={"center"}>
                 <Place
                   htmlColor={rich_black}
@@ -66,7 +86,7 @@ const Appointment = () => {
                   }}
                 />
                 <Typography component="span" color={rich_black} fontSize={22}>
-                  &nbsp;{layoutContext.appointment.location}
+                  &nbsp;{session.location}
                 </Typography>
               </Stack>
             )}
@@ -81,12 +101,10 @@ const Appointment = () => {
             <Button
               variant="contained"
               sx={{ color: "white", mt: "1vh", width: "fit-content" }}
+              onClick={() => setContactDialogOpen(true)}
             >
               Contact
             </Button>
-            {/* <Button variant="contained" sx={{ color: "white", mt: "1vh" }}>
-              I have arrived
-            </Button> */}
           </Stack>
         </Stack>
         <Typography
@@ -104,6 +122,25 @@ const Appointment = () => {
       <Stack width={"40%"} direction="column-reverse">
         <Illus3 />
       </Stack>
+      <Dialog
+        open={contactDialogOpen}
+        onClose={() => setContactDialogOpen(false)}
+      >
+        <DialogTitle>Contact {name}</DialogTitle>
+        <DialogContent>
+          <Stack spacing={2}>
+            <DialogContentText>
+              Email: <a href={`mailto:${email}`}>{email}</a>
+            </DialogContentText>
+            <DialogContentText>
+              Telephone: <a href={`tel:${phone}`}>{phone}</a>
+            </DialogContentText>
+            <DialogActions>
+              <Button onClick={() => setContactDialogOpen(false)}>Close</Button>
+            </DialogActions>
+          </Stack>
+        </DialogContent>
+      </Dialog>
     </Stack>
   );
 };

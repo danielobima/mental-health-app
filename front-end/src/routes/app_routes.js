@@ -14,11 +14,11 @@ const AppRoutes = () => {
         <Route index element={<HomePage />} />
         <Route path="/book" element={<BookPage />} />
         <Route path="/details" element={<DetailsPage />} />
-        <Route path="/appointment" element={<Appointment />} />
+        <Route path="/appointment/:session_id" element={<Appointment />} />
       </Route>
       <Route path="/doc" element={<Layout />}>
         <Route index element={<DocHomePage />} />
-        <Route path="/doc/appointment" element={<Appointment />} />
+        <Route path="/doc/appointment/:session_id" element={<Appointment />} />
         <Route path="/doc/details" element={<DocDetailsPage />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />

@@ -1,15 +1,15 @@
 class Session {
   constructor({
-    date,
-    meeting_type,
-    duration,
-    location,
-    doctor_id,
-    patient_id,
-    session_id,
+    date = "",
+    meeting_type = "",
+    duration = "",
+    location = "",
+    doctor_id = "",
+    patient_id = "",
+    session_id = "",
     payment_method = Math.random() > 0.5 ? "Credit card" : "Mpesa",
-    desc,
-    category,
+    desc = "",
+    category = "",
     date_created = new Date(Date.now()).getTime(),
   }) {
     this.date = date;
