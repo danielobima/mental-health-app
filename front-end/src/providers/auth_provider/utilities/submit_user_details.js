@@ -8,7 +8,9 @@ const submitPatientDetails = (patient) =>
   new Promise((resolve, reject) => {
     axios
       .post(`${baseURL}/patient/add_details`, {
-        ...patient,
+        patient: {
+          ...patient,
+        },
       })
       .then((response) => {
         resolve(response);
@@ -25,7 +27,9 @@ const submitDocDetails = (doc) =>
   new Promise((resolve, reject) => {
     axios
       .post(`${baseURL}/doctor/add_details`, {
-        ...doc,
+        doctor: {
+          ...doc,
+        },
       })
       .then((response) => {
         resolve(response);

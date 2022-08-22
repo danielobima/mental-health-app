@@ -36,9 +36,9 @@ const Layout = () => {
       //userId or user type is null hence the user is not authenticated,
       navigator("/login");
     } else {
-      // if (!context.user_details) {
-      //   navigator(context.userType === 0 ? "/details" : "/doc/details");
-      // }
+      if (!context.user_details) {
+        navigator(context.user_type === 0 ? "/details" : "/doc/details");
+      }
     }
     // eslint-disable-next-line
   }, []);

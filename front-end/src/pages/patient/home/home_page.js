@@ -47,7 +47,13 @@ const HomePage = () => {
           <Stack pl={3} spacing={2}>
             <Lines width={"12vw"} />
             <Typography variant="h4" color={skobeloff} fontWeight={600}>
-              {!starting ? "Welcome Josh" : "Dr Sarah is arriving soon"}
+              {!starting
+                ? `Welcome ${
+                    authContext.user_details
+                      ? authContext.user_details.full_name
+                      : ""
+                  }`
+                : "Dr Sarah is arriving soon"}
             </Typography>
             {!starting ? (
               <>

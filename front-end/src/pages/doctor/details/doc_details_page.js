@@ -1,9 +1,9 @@
-import { Person, Place } from "@mui/icons-material";
+import { Person } from "@mui/icons-material";
 import {
   Avatar,
   Button,
   FormControl,
-  InputAdornment,
+  Input,
   InputLabel,
   MenuItem,
   Select,
@@ -17,18 +17,19 @@ import Illus3 from "../../../images/svg/illus3/illus3";
 import Doctor from "../../../models/doctor_model";
 import { AuthContext } from "../../../providers/auth_provider/auth_provider";
 import { submitDocDetails } from "../../../providers/auth_provider/utilities/submit_user_details";
+import { StorageContext } from "../../../providers/storage_provider/storage_provider";
 import { rich_grey, skobeloff } from "../../../utilities/themes";
 
 const DocDetailsPage = () => {
-  const [profile_photo /*,setPhoto*/] = useState("no photo");
+  const [profile_photo, setPhoto] = useState("");
   const [full_name, setFullName] = useState("");
   const [telephone, setTelephone] = useState("");
   const context = useContext(AuthContext);
   const email = context.user ? context.user.email : "test1@mail.com";
   const doctor_id = context.user_id ? context.user_id : "";
-  const [location, setLocation] = useState("");
   const [religion, setReligion] = useState("");
   const navigator = useNavigate();
+  const storageContext = useContext(StorageContext);
 
   return (
     <Stack width={"100%"} height={"100%"} direction={"row"}>
@@ -42,12 +43,23 @@ const DocDetailsPage = () => {
               width: "10vw",
               height: "10vw",
             }}
+            src={profile_photo}
           >
             <Person />
           </Avatar>
-          <Typography component="span" color={rich_grey} fontWeight={600}>
-            Click the image to change it
-          </Typography>
+
+          <Button variant="contained" component="label" sx={{ color: "white" }}>
+            Upload new profile photo
+            <input
+              type="file"
+              onChange={(event) => {
+                storageContext
+                  .uploadProfilePhoto(event.target.files[0], doctor_id)
+                  .then((url) => setPhoto(url));
+              }}
+              hidden
+            />
+          </Button>
         </Stack>
 
         <ValidatorForm
@@ -57,7 +69,6 @@ const DocDetailsPage = () => {
               full_name,
               telephone,
               email,
-              location,
               religion,
               doctor_id,
               profile_photo,
@@ -86,27 +97,10 @@ const DocDetailsPage = () => {
               name="telephone"
               value={telephone}
               onChange={(event) => setTelephone(event.target.value)}
-              hintText="Hi"
               validators={["required"]}
               errorMessages={["This field is required"]}
             />
-            <TextValidator
-              style={{ width: "100%" }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Place />
-                  </InputAdornment>
-                ),
-              }}
-              label="Address"
-              type="text"
-              name="address"
-              value={location}
-              onChange={(event) => setLocation(event.target.value)}
-              validators={["required"]}
-              errorMessages={["This field is required"]}
-            />
+
             <FormControl fullWidth>
               <InputLabel id="religion-label">Religion</InputLabel>
               <Select
