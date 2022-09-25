@@ -2,6 +2,7 @@ import { Person } from "@mui/icons-material";
 import {
   Avatar,
   Button,
+  CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
@@ -27,6 +28,8 @@ const DetailsPage = () => {
   const context = useContext(AuthContext);
   const email = context.user ? context.user.email : "test1@mail.com";
   const patient_id = context.user_id ? context.user_id : "";
+  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [religion, setReligion] = useState("");
   const navigator = useNavigate();
   const storageContext = useContext(StorageContext);
@@ -46,14 +49,28 @@ const DetailsPage = () => {
           >
             <Person />
           </Avatar>
-          <Button variant="contained" component="label" sx={{ color: "white" }}>
+          <Button
+            variant="contained"
+            component="label"
+            sx={{ color: "white" }}
+            disabled={loading}
+          >
+            {loading && (
+              <>
+                <CircularProgress size={"16px"} /> &nbsp;
+              </>
+            )}
             Upload new profile photo
             <input
               type="file"
               onChange={(event) => {
+                setLoading(true);
                 storageContext
                   .uploadProfilePhoto(event.target.files[0], patient_id)
-                  .then((url) => setPhoto(url));
+                  .then((url) => {
+                    setLoading(false);
+                    setPhoto(url);
+                  });
               }}
               hidden
             />
@@ -72,8 +89,12 @@ const DetailsPage = () => {
               patient_id,
               profile_photo,
             });
+            setSubmitting(true);
             submitPatientDetails(patient)
-              .then(() => navigator("/"))
+              .then(() => {
+                setSubmitting(false);
+                navigator("/");
+              })
               .catch((error) => {
                 alert(error);
               });
@@ -128,7 +149,17 @@ const DetailsPage = () => {
               </Select>
             </FormControl>
 
-            <Button type="submit" variant="contained" sx={{ color: "white" }}>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ color: "white" }}
+              disabled={submitting}
+            >
+              {submitting && (
+                <>
+                  <CircularProgress size={"16px"} /> &nbsp;
+                </>
+              )}
               Submit
             </Button>
           </Stack>
