@@ -15,7 +15,18 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
-    cred = credentials.Certificate(json.loads(os.environ.get('FB_PRIVATE_KEY')))
+    cred = credentials.Certificate({
+        "type": "service_account",
+  "project_id": os.environ.get('FB_PROJECT_ID'),
+  "private_key_id": os.environ.get('FB_PRIVATE_KEY_ID'),
+  "private_key": os.environ.get('FB_PRIVATE_KEY'),
+  "client_email": os.environ.get('FB_CLIENT_EMAIL'),
+  "client_id": os.environ.get('FB_CLIENT_ID'),
+  "auth_uri": os.environ.get('FB_AUTH_URI'),
+  "token_uri": os.environ.get('FB_TOKEN_URI'),
+  "auth_provider_x509_cert_url":os.environ.get('FB_AUTH_CERT_URL'),
+  "client_x509_cert_url":os.environ.get('FB_CLIENT_CERT_URL')
+    })
     firebase_admin.initialize_app(cred, {
         'databaseURL': os.environ.get('FB_DATABASE_URL')
     })
