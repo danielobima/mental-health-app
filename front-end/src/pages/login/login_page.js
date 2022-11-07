@@ -114,13 +114,17 @@ const LoginPage = () => {
             width={"35%"}
             height="100%"
             bgcolor={"white"}
-            sx={{ boxShadow: "0px 3px 6px grey" }}
+            sx={{
+              boxShadow: "0px 3px 6px grey",
+              overflow: "auto",
+            }}
           >
             <Stack
               justifyContent={"center"}
               alignItems="center"
               width="100%"
               height={"100%"}
+              sx={{ mt: 2, mb: 2 }}
             >
               {/* <LogoBlack /> */}
               <ValidatorForm onSubmit={handleSubmit}>
