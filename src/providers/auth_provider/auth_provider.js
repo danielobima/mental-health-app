@@ -17,8 +17,8 @@ const AuthProvider = ({ children }) => {
   /** A user identification string */
   const [user_id, setUserId] = useState("");
   const [user, setUser] = useState();
-  const [user_details, setUserDetails] = useState(false);
-  const [user_type, setUserType] = useState(false);
+  const [user_details, setUserDetails] = useState({});
+  const [user_type, setUserType] = useState(0);
 
   /** A function for signing in */
   const signIn = (email, password) =>

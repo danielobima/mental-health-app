@@ -1,46 +1,70 @@
-# mental-health-app
+# Getting Started with Create React App
 
-A hackathon project for mental health.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-**Installation (front-end)**
+## Available Scripts
 
-1. Make sure you have node.js and npm installed on your computer
-2. Clone the project from github [https://github.com/danielobima/mental-health-app](https://github.com/danielobima/mental-health-app)
-3. Navigate to the front-end folder inside the project using command prompt or a terminal
-4. Run the following command to install the project’s dependencies `npm install`
-5. Create a file called .env in the directory
-6. Create a firebase account and a new project and register your app. For reference follow step 1 [https://firebase.google.com/docs/web/setup?authuser=0&hl=en](https://firebase.google.com/docs/web/setup?authuser=0&hl=en)
-7. Initiate a realtime database, storage bucket and authentication with email and password. For reference, Setting up the database [https://firebase.google.com/docs/database/web/start?hl=en&authuser=0](https://firebase.google.com/docs/database/web/start?hl=en&authuser=0), Setting up the storage bucket [https://firebase.google.com/docs/storage/web/start?hl=en&authuser=0](https://firebase.google.com/docs/storage/web/start?hl=en&authuser=0), Setting up authentication https://firebase.google.com/docs/auth/web/password-auth?authuser=0
-8. Obtain a config object [https://firebase.google.com/docs/web/learn-more?authuser=0#config-object](https://firebase.google.com/docs/web/learn-more?authuser=0#config-object)
-9. In the .env file paste your config object properties like so
+In the project directory, you can run:
 
-   ```
-   REACT_APP_FB_API_KEY="Your key"
-   REACT_APP_FB_AUTH_DOMAIN="Your auth domain"
-   REACT_APP_FB_DATABASE_URL="your database url"
-   REACT_APP_FB_PROJECT_ID="your project ID"
-   REACT_APP_FB_STORAGE_BUCKET="your storage bucket"
-   REACT_APP_FB_MESSAGING_SENDER_ID="your messaging sender ID"
-   REACT_APP_FB_APP_ID="your app ID"
-   ```
+### `npm start`
 
-10. To start the website, run `npm start`
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-**Installation (back-end)**
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-1. Make sure you have python and pip installed on your computer
-2. Navigate to the back end folder using command prompt or a terminal
-3. Create a virtual environment using `python -m venv venv`
-4. Activate the virtual environment using `venv\Scripts\activate`
-5. Install the project dependencies using `pip install -r requirements.txt`
-6. Create a .env file in the directory
-7. Generate your firebase service account key. For reference https://firebase.google.com/docs/admin/setup?authuser=0&hl=en#initialize-sdk
-8. Convert the json file into a string. You can use this tool [https://jsonformatter.org/json-stringify-online](https://jsonformatter.org/json-stringify-online)
-9. Paste the service account string you generated into the .env file. Paste your database url into the .env file
+### `npm test`
 
-   ```
-   FB_PRIVATE_KEY="Your service account key"
-   FB_DATABASE_URL=Your database url
-   ```
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-10. Run the server using `flask --debug run` (debug mode), or `flask run`
+### `npm run build`
+
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `npm run eject`
+
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
