@@ -14,6 +14,8 @@ const AuthProvider = ({ children }) => {
   //init authentication sdk
   const auth = getAuth(app);
 
+  //a nice comment
+
   /** A user identification string */
   const [user_id, setUserId] = useState("");
   const [user, setUser] = useState();
